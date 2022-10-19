@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <table class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>Дата</th>
+                <th>Клієнт</th>
+                <th>Деталі</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for order in orders%}
+            <tr>
+                <td>{{order.appointment_date}}</td>
+                <td>{{order.client}}</td>
+                <td>
+                    <a href="{% url 'orders_detail' order.id %}">{{order.id}}</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

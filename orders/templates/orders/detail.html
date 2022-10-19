@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <dl>
+        <dt>Послуга</dt>
+        <dd>{{ order.service_name }}</dd>
+        <dt>Сума</dt>
+        <dd>{{ order.pay_amount }}</dd>
+        <dt>Вид оплати</dt>
+        <dd>{{ order.pay_method }}</dd>
+    </dl>
+{% endblock %}

@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <dl>
+        <dt>Імʼя</dt>
+        <dd>{{ client.client_name }}</dd>
+        <dt>Номер телефону</dt>
+        <dd>{{ client.phone_number }}</dd>
+    </dl>
+{% endblock %}
