@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <dl>
+        <dt>Послуга</dt>
+        <dd>{{ appointment.service }}</dd>
+        <dt>Клієнт</dt>
+        <dd>{{ appointment.client_name }}</dd>
+        <dt>Контактний номер</dt>
+        <dd>{{ appointment.phone_number }}</dd>
+    </dl>
+{% endblock %}

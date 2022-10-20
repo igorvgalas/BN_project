@@ -1,3 +1,14 @@
 from django.test import TestCase
 
-# Create your tests here.
+from models import Order
+
+
+class TestOrm(TestCase):
+
+    def test_query(self):
+        q = Order.objects.select_related('client')
+        print(q.query)
+
+
+a = TestOrm()
+a.test_query()

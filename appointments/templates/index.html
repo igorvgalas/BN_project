@@ -10,12 +10,12 @@
             </tr>
         </thead>
         <tbody>
-            {% for order in orders%}
+            {% for appointment in appointments%}
             <tr>
-                <td>{{order.appointment_date}}</td>
-                <td>{{order.client_name}}</td>
+                <td>{{appointment.date}}</td>
+                <td>{{appointment.client_name}}</td>
                 <td>
-                    <a href="{% url 'orders_detail' order.id %}">{{ order.id }}</a>
+                    <a href="{% url 'appointments_detail' appointment.id %}">{{ appointment.id }}</a>
                 </td>
             </tr>
             {% endfor %}

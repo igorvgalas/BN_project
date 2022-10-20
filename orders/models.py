@@ -17,6 +17,19 @@ class Order(models.Model):
         db_table = 'orders'
 
 
+class OrderWithClientData(models.Model):
+    appointment_date = models.DateField(blank=True, null=True)
+    service_name = models.CharField(max_length=255, blank=True, null=True)
+    pay_amount = models.IntegerField(blank=True, null=True)
+    pay_method = models.CharField(max_length=50, blank=True, null=True)
+    client_name = models.CharField(max_length=50, blank=True, null=True)
+    phone_number = models.IntegerField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'orders_with_client_data'
+
+
 '''class Order(models.Model):
     date = models.DateField(default=timezone.now)
     time = models.TimeField(default=timezone.get_current_timezone)

@@ -11,6 +11,10 @@ class Client(models.Model):
         db_table = 'clients'
 
 
+if __name__ == '__main__':
+    a = Client.phone_number
+    print(a)
+
 '''class Client(models.Model):
     name = models.CharField(max_length=30)
     phone_number = models.IntegerField()'''

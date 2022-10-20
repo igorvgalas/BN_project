@@ -43,7 +43,8 @@ INSTALLED_APPS = [
     'services.apps.ServicesConfig',
     'orders.apps.OrdersConfig',
     'masters.apps.MastersConfig',
-    'clients.apps.ClientsConfig'
+    'clients.apps.ClientsConfig',
+    'appointments.apps.AppointmentsConfig'
 ]
 
 MIDDLEWARE = [
