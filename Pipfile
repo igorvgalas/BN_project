@@ -9,8 +9,11 @@ bn = "*"
 pylint-django = "*"
 "path.py" = "*"
 pymysql = "*"
+django-jazzmin = "*"
 
 [dev-packages]
+pylint = "*"
+autopep8 = "*"
 
 [requires]
 python_version = "3.11"
