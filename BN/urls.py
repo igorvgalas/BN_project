@@ -17,6 +17,7 @@ from django.contrib import admin
 from django.urls import path, include
 from . import views
 
+
 urlpatterns = [
     path('', views.home),
     path('admin/', admin.site.urls),
@@ -26,3 +27,5 @@ urlpatterns = [
     path('clients/', include('clients.urls')),
     path('appointments/', include('appointments.urls'))
 ]
+
+#handler404 = pageNotFound

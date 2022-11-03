@@ -6,14 +6,13 @@ class Client(models.Model):
     phone_number = models.CharField(
         unique=True, max_length=255, blank=True, null=True)
 
+    def __str__(self):
+        return self.client_name
+
     class Meta:
         managed = False
         db_table = 'clients'
 
-
-if __name__ == '__main__':
-    a = Client.phone_number
-    print(a)
 
 '''class Client(models.Model):
     name = models.CharField(max_length=30)
