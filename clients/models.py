@@ -12,6 +12,9 @@ class Client(models.Model):
     class Meta:
         managed = False
         db_table = 'clients'
+        verbose_name = 'Список клієнтів'
+        verbose_name_plural = 'Список клієнтів'
+        ordering = ['id', ]
 
 
 '''class Client(models.Model):

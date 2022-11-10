@@ -18,6 +18,8 @@ class Order(models.Model):
     class Meta:
         managed = False
         db_table = 'orders'
+        verbose_name = 'Список замовлень'
+        verbose_name_plural = 'Список замовлень'
 
 
 class OrderWithClientData(models.Model):

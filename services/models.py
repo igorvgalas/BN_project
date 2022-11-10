@@ -11,6 +11,9 @@ class Service(models.Model):
     class Meta:
         managed = False
         db_table = 'services'
+        verbose_name = 'Список послуг'
+        verbose_name_plural = 'Список послуг'
+        ordering = ['id', ]
 
 
 '''class Service(models.Model):

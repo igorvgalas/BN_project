@@ -6,3 +6,4 @@ from .models import Order
 class OrderAdmin(admin.ModelAdmin):
     list_display = ('id', 'appointment_date', 'service_name', 'pay_amount',
                     'pay_method', 'client')
+    search_fields = ('appointment_date', 'client')

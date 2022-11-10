@@ -12,3 +12,5 @@ class Master(models.Model):
     class Meta:
         managed = False
         db_table = 'masters'
+        verbose_name = 'Список майстрів'
+        verbose_name_plural = 'Список майстрів'

@@ -13,3 +13,5 @@ class Appointment(models.Model):
     class Meta:
         managed = True
         db_table = 'appointments'
+        verbose_name = 'Запис клієнтів'
+        verbose_name_plural = 'Запис клієнтів'
