@@ -11,8 +11,8 @@
   <meta content="" name="keywords">
 
   <!-- Favicons -->
-  <link href="static/images/favicon.png" rel="icon">
-  <link href="static/imagges/apple-touch-icon.png" rel="apple-touch-icon">
+  <link href={%static "images/favicon.png"%} rel='icon'>
+  <link href={%static "imagges/apple-touch-icon.png"%} rel='apple-touch-icon'>
 
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
@@ -26,7 +26,7 @@
   <link href={% static "vendor/swiper/swiper-bundle.min.css" %} rel='stylesheet'>
 
   <!-- Template Main CSS File -->
-  <link href={% static "css/style.css" %}  rel="stylesheet">
+  <link href={% static "css/style.css" %}  rel='stylesheet'>
 
   <!-- =======================================================
   * Template Name: Maxim - v4.9.1
@@ -50,12 +50,12 @@
 
       <nav id="navbar" class="navbar">
         <ul>
-          <li><a class="nav-link scrollto " href="#hero">Home</a></li>
-          <li><a class="nav-link scrollto" href="#about">About</a></li>
-          <li><a class="nav-link scrollto" href="#services">Services</a></li>
-          <li><a class="nav-link scrollto " href="#portfolio">Portfolio</a></li>
-          <li><a class="nav-link scrollto" href="#team">Team</a></li>
-          <li class="dropdown"><a href="#"><span>Drop Down</span> <i class="bi bi-chevron-down"></i></a>
+          <li><a class="nav-link scrollto " href="#hero">Головна</a></li>
+          <li><a class="nav-link scrollto" href="#about">Про нас</a></li>
+          <li><a class="nav-link scrollto" href="#services">Послуги</a></li>
+          <li><a class="nav-link scrollto " href="#portfolio">Галерея</a></li>
+          <li><a class="nav-link scrollto" href="#team">Наша команда</a></li>
+          <li class="dropdown"><a href="#"><span>Онлайн запис</span> <i class="bi bi-chevron-down"></i></a>
             <ul>
               <li><a href="#">Drop Down 1</a></li>
               <li class="dropdown"><a href="#"><span>Deep Drop Down</span> <i class="bi bi-chevron-right"></i></a>
@@ -72,7 +72,7 @@
               <li><a href="#">Drop Down 4</a></li>
             </ul>
           </li>
-          <li><a class="nav-link scrollto" href="#contact">Contact</a></li>
+          <li><a class="nav-link scrollto" href="#contact">Контакти</a></li>
         </ul>
         <i class="bi bi-list mobile-nav-toggle"></i>
       </nav><!-- .navbar -->
@@ -88,8 +88,8 @@
 
         <div class="d-flex justify-content-between align-items-center">
           <ol>
-            <li><a href="{{'main.html'}}">Home</a></li>
-            <li><a href="{%url 'name_index'%}">Name</a></li>
+            <li><a href="{%url 'home'%}">Головна</a></li>
+            <li><a href="{%url 'services_index'%}">назва сторінки</a></li>
           </ol>
         </div>
 
@@ -114,12 +114,12 @@
 
           <div class="col-lg-3 col-md-6">
             <div class="footer-info">
-              <h3>Maxim</h3>
+              <h3>Beauty Nails</h3>
               <p>
-                A108 Adam Street <br>
-                NY 535022, USA<br><br>
-                <strong>Phone:</strong> +1 5589 55488 55<br>
-                <strong>Email:</strong> info@example.com<br>
+                проспект Чорновола 67г <br>
+                Львів 79000, Україна<br><br>
+                <strong>Phone:</strong> +380684786142<br>
+                <strong>Email:</strong> beautynailslviv@gmail.com<br>
               </p>
               <div class="social-links mt-3">
                 <a href="#" class="twitter"><i class="bx bxl-twitter"></i></a>
@@ -132,30 +132,29 @@
           </div>
 
           <div class="col-lg-2 col-md-6 footer-links">
-            <h4>Useful Links</h4>
+            <h4>Корисні посилання</h4>
             <ul>
-              <li><i class="bx bx-chevron-right"></i> <a href="#">Home</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="#">About us</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="#">Services</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="#">Terms of service</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="#">Privacy policy</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="{%url 'home'%}">Головна</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="#">Про нас</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="#">Послуги</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="#">Вакансії</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="#">Політика конфіденційності</a></li>
             </ul>
           </div>
 
           <div class="col-lg-3 col-md-6 footer-links">
-            <h4>Our Services</h4>
+            <h4>Наші сервіси</h4>
             <ul>
-              <li><i class="bx bx-chevron-right"></i> <a href="#">Web Design</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="#">Web Development</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="#">Product Management</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="#">Marketing</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="#">Graphic Design</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="#">Манікюр</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="#">Педикюр</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="#">Нарощення нігтів</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="#">Догляд брів</a></li>
             </ul>
           </div>
 
           <div class="col-lg-4 col-md-6 footer-newsletter">
-            <h4>Our Newsletter</h4>
-            <p>Tamen quem nulla quae legam multos aute sint culpa legam noster magna</p>
+            <h4>Підписка</h4>
+            <p>Новинки та спеціальні пропозиції</p>
             <form action="" method="post">
               <input type="email" name="email"><input type="submit" value="Subscribe">
             </form>
@@ -168,7 +167,7 @@
 
     <div class="container">
       <div class="copyright">
-        &copy; Copyright <strong><span>Maxim</span></strong>. All Rights Reserved
+        &copy; Copyright <strong><span>Beauty nails</span></strong>. All Rights Reserved
       </div>
       <div class="credits">
         <!-- All the links in the footer should remain intact. -->

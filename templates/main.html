@@ -43,19 +43,19 @@
     <div class="container d-flex justify-content-between">
 
       <div class="logo">
-        <h1><a href="main.html">Beauty nails</a></h1>
+        <h1><a href="{% url 'home'%}">Beauty nails</a></h1>
         <!-- Uncomment below if you prefer to use an image logo -->
         <!--<a href="main.html"><img src={% static "images/IMG_5808.JPG"%} alt="" class="img-fluid"></a>-->
       </div>
 
       <nav id="navbar" class="navbar">
         <ul>
-          <li><a class="nav-link scrollto active" href="#hero">Головна</a></li>
+          <li><a class="nav-link scrollto active" href="{% url 'home'%}">Головна</a></li>
           <li><a class="nav-link scrollto" href="#about">Про нас</a></li>
           <li><a class="nav-link scrollto" href="#services">Послуги</a></li>
           <li><a class="nav-link scrollto " href="#portfolio">Галерея</a></li>
           <li><a class="nav-link scrollto" href="#team">Наша команда</a></li>
-          <li class="dropdown"><a href="#"><span>Онлайн запис</span> <i class="bi bi-chevron-down"></i></a>
+          <li class="dropdown"><a href="{% url 'add_orders'%}"><span>Онлайн запис</span> <i class="bi bi-chevron-down"></i></a>
             <ul>
               <li><a href="#">Drop Down 1</a></li>
               <li class="dropdown"><a href="#"><span>Deep Drop Down</span> <i class="bi bi-chevron-right"></i></a>
@@ -85,7 +85,7 @@
     <div class="container text-center text-md-left" data-aos="fade-up">
       <h1>Запрошуємо в студію Beauty Nails</h1>
       <h2>Ми команда талановитих нейл-дизайнерів, які роблять найкращий манікюр у Львові</h2>
-      <a href="#about" class="btn-get-started scrollto">Зробити запис</a>
+      <a href="{% url 'add_orders'%}" class="btn-get-started scrollto">Зробити запис</a>
     </div>
   </section><!-- End Hero -->
 
@@ -718,11 +718,11 @@
                 <textarea class="form-control" name="message" rows="5" placeholder="Message" required></textarea>
               </div>
               <div class="my-3">
-                <div class="loading">Loading</div>
+                <div class="loading">Завантаження</div>
                 <div class="error-message"></div>
-                <div class="sent-message">Your message has been sent. Thank you!</div>
+                <div class="sent-message">Ваш запис надіслано. Дякуємо!</div>
               </div>
-              <div class="text-center"><button type="submit">Send Message</button></div>
+              <div class="text-center"><button type="submit">Надіслати</button></div>
             </form>
           </div>
 

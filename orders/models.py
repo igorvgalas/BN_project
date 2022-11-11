@@ -1,6 +1,6 @@
 from django.db import models
 from django.utils import timezone
-#from services.models import Service
+from services.models import Service
 from clients.models import Client
 #from masters.models import Master
 
@@ -33,6 +33,23 @@ class OrderWithClientData(models.Model):
     class Meta:
         managed = False
         db_table = 'orders_with_client_data'
+
+
+class Order_client(models.Model):
+    appointment_date = models.DateField()
+    appointment_time = models.TimeField()
+    service_name = models.ForeignKey(Service, on_delete=models.DO_NOTHING)
+    client_name = models.CharField(max_length=50)
+    phone_number = models.IntegerField()
+
+    def __str__(self):
+        return str(self.appointment_date)
+
+    class Meta:
+        managed = True
+        db_table = 'orders_clients'
+        verbose_name = 'Онлайн запис'
+        verbose_name_plural = 'Онлайн запис'
 
 
 '''class Order(models.Model):

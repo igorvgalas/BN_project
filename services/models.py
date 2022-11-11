@@ -6,14 +6,14 @@ class Service(models.Model):
     serv_name = models.CharField(max_length=255, blank=True, null=True)
 
     def __str__(self):
-        return str(self.pk)
+        return str(self.serv_name)
 
     class Meta:
         managed = False
         db_table = 'services'
         verbose_name = 'Список послуг'
         verbose_name_plural = 'Список послуг'
-        ordering = ['id', ]
+        ordering = ['id', 'serv_name']
 
 
 '''class Service(models.Model):
