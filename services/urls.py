@@ -1,8 +1,13 @@
 from django.urls import path
-from . import views
+from .views import *
 
 
 urlpatterns = [
-    path('', views.index, name='services_index'),
-    path('<int:service_id>', views.detail, name='services_detail')
+    path('', ServiceIndex.as_view(), name='services_index'),
+    path('<int:service_id>', ServiceDetail.as_view(), name='services_detail'),
+    path('manicure/', ServiceManicure.as_view(), name='manicure'),
+    path('pedicure/', ServicePedicure.as_view(), name='pedicure'),
+    path('addnails/', ServiceAddNails.as_view(), name='addnails'),
+    path('eyes/', ServiceEyes.as_view(), name='eyes')
+
 ]

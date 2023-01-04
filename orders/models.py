@@ -2,7 +2,7 @@ from django.db import models
 from django.utils import timezone
 from services.models import Service
 from clients.models import Client
-#from masters.models import Master
+from masters.models import Master
 
 
 class Order(models.Model):
@@ -28,7 +28,7 @@ class OrderWithClientData(models.Model):
     pay_amount = models.IntegerField(blank=True, null=True)
     pay_method = models.CharField(max_length=50, blank=True, null=True)
     client_name = models.CharField(max_length=50, blank=True, null=True)
-    phone_number = models.IntegerField(blank=True, null=True)
+    phone_number = models.IntegerField()
 
     class Meta:
         managed = False
@@ -40,7 +40,9 @@ class Order_client(models.Model):
     appointment_time = models.TimeField()
     service_name = models.ForeignKey(Service, on_delete=models.DO_NOTHING)
     client_name = models.CharField(max_length=50)
-    phone_number = models.IntegerField()
+    phone_number = models.CharField(max_length=9)
+    master = models.ForeignKey(
+        Master, default=None, on_delete=models.DO_NOTHING)
 
     def __str__(self):
         return str(self.appointment_date)

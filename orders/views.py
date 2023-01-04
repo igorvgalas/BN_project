@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import render, redirect
 from .forms import UserOrder
 
 
@@ -10,4 +10,4 @@ def add_order(request):
             return redirect('home')
     else:
         form = UserOrder()
-    return render(request, 'orders/order.html', {'form': form, 'title': 'Новий запис'})
+    return render(request, 'order_clients.html', {'form': form, 'title': 'Новий запис'})

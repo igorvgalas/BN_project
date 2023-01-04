@@ -3,6 +3,10 @@
 <html lang="en">
 
 <head>
+  {% load bootstrap5 %}
+  {% bootstrap_javascript %}
+  {% bootstrap_css %}
+
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
@@ -19,8 +23,8 @@
 
   <!-- Vendor CSS Files -->
   <link href={% static "vendor/aos/aos.css" %} rel='stylesheet'>
-  <link href={% static "vendor/bootstrap/css/bootstrap.min.css" %} rel='stylesheet'>
-  <link href={% static "vendor/bootstrap-icons/bootstrap-icons.css" %} rel='stylesheet'>
+  {% comment %} <link href={% static "vendor/bootstrap/css/bootstrap.min.css" %} rel='stylesheet'>
+  <link href={% static "vendor/bootstrap-icons/bootstrap-icons.css" %} rel='stylesheet'> {% endcomment %}
   <link href={% static "vendor/boxicons/css/boxicons.min.css" %} rel='stylesheet'>
   <link href={% static "vendor/glightbox/css/glightbox.min.css" %} rel='stylesheet'>
   <link href={% static "vendor/swiper/swiper-bundle.min.css" %} rel='stylesheet'>
@@ -72,7 +76,7 @@
               <li><a href="#">Drop Down 4</a></li>
             </ul>
           </li>
-          <li><a class="nav-link scrollto" href="#contact">Контакти</a></li>
+          <li><a class="nav-link scrollto" href="{% url 'contacts'%}">Контакти</a></li>
         </ul>
         <i class="bi bi-list mobile-nav-toggle"></i>
       </nav><!-- .navbar -->
@@ -251,7 +255,7 @@
           <div class="col-md-6 col-lg-3 d-flex align-items-stretch mb-5 mb-lg-0" data-aos="fade-up">
             <div class="icon-box icon-box-pink">
               <div class="icon"><i class="bx bxl-dribbble"></i></div>
-              <h4 class="title"><a href="{%url 'services_index'%}">манікюр</a></h4>
+              <h4 class="title"><a href="{%url 'manicure'%}">манікюр</a></h4>
               <p class="description">опис</p>
             </div>
           </div>
@@ -259,7 +263,7 @@
           <div class="col-md-6 col-lg-3 d-flex align-items-stretch mb-5 mb-lg-0" data-aos="fade-up" data-aos-delay="100">
             <div class="icon-box icon-box-cyan">
               <div class="icon"><i class="bx bx-file"></i></div>
-              <h4 class="title"><a href=""></a>педикюр</h4>
+              <h4 class="title"><a href="{%url 'pedicure'%}">педикюр</a></h4>
               <p class="description">опис</p>
             </div>
           </div>
@@ -267,7 +271,7 @@
           <div class="col-md-6 col-lg-3 d-flex align-items-stretch mb-5 mb-lg-0" data-aos="fade-up" data-aos-delay="200">
             <div class="icon-box icon-box-green">
               <div class="icon"><i class="bx bx-tachometer"></i></div>
-              <h4 class="title"><a href="">нарощення</a></h4>
+              <h4 class="title"><a href="{%url 'addnails'%}">нарощення</a></h4>
               <p class="description">опис</p>
             </div>
           </div>
@@ -275,7 +279,7 @@
           <div class="col-md-6 col-lg-3 d-flex align-items-stretch mb-5 mb-lg-0" data-aos="fade-up" data-aos-delay="300">
             <div class="icon-box icon-box-blue">
               <div class="icon"><i class="bx bx-world"></i></div>
-              <h4 class="title"><a href="">брови</a></h4>
+              <h4 class="title"><a href="{%url 'eyes'%}">брови</a></h4>
               <p class="description">опис</p>
             </div>
           </div>
@@ -700,33 +704,8 @@
 
         </div>
 
-        <div class="row mt-5 justify-content-center" data-aos="fade-up">
-          <div class="col-lg-10">
-            <form action="forms/contact.php" method="post" role="form" class="php-email-form">
-              <div class="row">
-                <div class="col-md-6 form-group">
-                  <input type="text" name="name" class="form-control" id="name" placeholder="Your Name" required>
-                </div>
-                <div class="col-md-6 form-group mt-3 mt-md-0">
-                  <input type="email" class="form-control" name="email" id="email" placeholder="Your Email" required>
-                </div>
-              </div>
-              <div class="form-group mt-3">
-                <input type="text" class="form-control" name="subject" id="subject" placeholder="Subject" required>
-              </div>
-              <div class="form-group mt-3">
-                <textarea class="form-control" name="message" rows="5" placeholder="Message" required></textarea>
-              </div>
-              <div class="my-3">
-                <div class="loading">Завантаження</div>
-                <div class="error-message"></div>
-                <div class="sent-message">Ваш запис надіслано. Дякуємо!</div>
-              </div>
-              <div class="text-center"><button type="submit">Надіслати</button></div>
-            </form>
-          </div>
-
-        </div>
+        
+      </div>
 
       </div>
     </section><!-- End Contact Section -->
@@ -761,21 +740,20 @@
           <div class="col-lg-2 col-md-6 footer-links">
             <h4>Корисні посилання</h4>
             <ul>
-              <li><i class="bx bx-chevron-right"></i> <a href="#">Головна</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="#">Про нас</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="#">Послуги</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="{%url 'home'%}">Головна</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="{% url 'services_index'%}">Послуги</a></li>
               <li><i class="bx bx-chevron-right"></i> <a href="#">Вакансії</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="#">Політика конфіденційності</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="{% url 'add_response' %}">Залишити відгук</a></li>
             </ul>
           </div>
 
           <div class="col-lg-3 col-md-6 footer-links">
             <h4>Наші сервіси</h4>
             <ul>
-              <li><i class="bx bx-chevron-right"></i> <a href="#">Манікюр</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="#">Педикюр</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="#">Нарощення нігтів</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="#">Догляд брів</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="{% url 'manicure'%}">Манікюр</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="{% url 'pedicure'%}">Педикюр</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="{% url 'addnails'%}">Нарощення нігтів</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="{% url 'eyes'%}">Догляд брів</a></li>
             </ul>
           </div>
 
@@ -810,7 +788,7 @@
 
   <!-- Vendor JS Files -->
   <script src={%static "vendor/aos/aos.js"%}></script>
-  <script src={%static "vendor/bootstrap/js/bootstrap.bundle.min.js"%}></script>
+  {% comment %} <script src={%static "vendor/bootstrap/js/bootstrap.bundle.min.js"%}></script> {% endcomment %}
   <script src={%static "vendor/glightbox/js/glightbox.min.js"%}></script>
   <script src={%static "vendor/isotope-layout/isotope.pkgd.min.js"%}></script>
   <script src={%static "vendor/swiper/swiper-bundle.min.js"%}></script>

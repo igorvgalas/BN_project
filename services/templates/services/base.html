@@ -6,7 +6,7 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>Inner Page - Maxim Bootstrap Template</title>
+  <title>Послуги - Beauty nails</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
 
@@ -43,36 +43,18 @@
     <div class="container d-flex justify-content-between">
 
       <div class="logo">
-        <h1><a href="main.html">Beauty Nails</a></h1>
+        <h1><a href="{% url 'home'%}">Beauty Nails</a></h1>
         <!-- Uncomment below if you prefer to use an image logo -->
         <!-- <a href="index.html"><img src="static/images/logo.png" alt="" class="img-fluid"></a>-->
       </div>
 
       <nav id="navbar" class="navbar">
         <ul>
-          <li><a class="nav-link scrollto " href="#hero">Головна</a></li>
-          <li><a class="nav-link scrollto" href="#about">Про нас</a></li>
-          <li><a class="nav-link scrollto" href="#services">Послуги</a></li>
-          <li><a class="nav-link scrollto " href="#portfolio">Галерея</a></li>
-          <li><a class="nav-link scrollto" href="#team">Наша команда</a></li>
-          <li class="dropdown"><a href="#"><span>Онлайн запис</span> <i class="bi bi-chevron-down"></i></a>
-            <ul>
-              <li><a href="#">Drop Down 1</a></li>
-              <li class="dropdown"><a href="#"><span>Deep Drop Down</span> <i class="bi bi-chevron-right"></i></a>
-                <ul>
-                  <li><a href="#">Deep Drop Down 1</a></li>
-                  <li><a href="#">Deep Drop Down 2</a></li>
-                  <li><a href="#">Deep Drop Down 3</a></li>
-                  <li><a href="#">Deep Drop Down 4</a></li>
-                  <li><a href="#">Deep Drop Down 5</a></li>
-                </ul>
-              </li>
-              <li><a href="#">Drop Down 2</a></li>
-              <li><a href="#">Drop Down 3</a></li>
-              <li><a href="#">Drop Down 4</a></li>
-            </ul>
-          </li>
-          <li><a class="nav-link scrollto" href="#contact">Контакти</a></li>
+          <li><a class="nav-link scrollto " href="{% url 'home'%}">Головна</a></li>
+          <li><a class="nav-link scrollto" href="{% url 'services_index'%}">Послуги</a></li>
+          <li><a class="nav-link scrollto" href="{% url 'add_orders'%}">Онлайн запис</a></li>
+          <li><a class="nav-link scrollto" href="{% url 'contacts'%}">Контакти</a></li>
+          
         </ul>
         <i class="bi bi-list mobile-nav-toggle"></i>
       </nav><!-- .navbar -->
@@ -89,7 +71,7 @@
         <div class="d-flex justify-content-between align-items-center">
           <ol>
             <li><a href="{%url 'home'%}">Головна</a></li>
-            <li><a href="{%url 'services_index'%}">назва сторінки</a></li>
+            <li><a href="{%url 'services_index'%}">Послуги</a></li>
           </ol>
         </div>
 
@@ -99,7 +81,8 @@
     <section class="inner-page">
       <div class="container">
         <p>
-          {% block content %}{% endblock %}
+          {% block content %}
+          {% endblock %}
         </p>
       </div>
     </section>
@@ -135,20 +118,19 @@
             <h4>Корисні посилання</h4>
             <ul>
               <li><i class="bx bx-chevron-right"></i> <a href="{%url 'home'%}">Головна</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="#">Про нас</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="#">Послуги</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="{% url 'services_index'%}">Послуги</a></li>
               <li><i class="bx bx-chevron-right"></i> <a href="#">Вакансії</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="#">Політика конфіденційності</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="{% url 'add_response' %}">Залишити відгук</a></li>
             </ul>
           </div>
 
           <div class="col-lg-3 col-md-6 footer-links">
             <h4>Наші сервіси</h4>
             <ul>
-              <li><i class="bx bx-chevron-right"></i> <a href="#">Манікюр</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="#">Педикюр</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="#">Нарощення нігтів</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="#">Догляд брів</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="{% url 'manicure'%}">Манікюр</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="{% url 'pedicure'%}">Педикюр</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="{% url 'addnails'%}">Нарощення нігтів</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="{% url 'eyes'%}">Догляд брів</a></li>
             </ul>
           </div>
 

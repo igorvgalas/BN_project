@@ -6,7 +6,7 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>Онлайн запис - Beauty Nails</title>
+  <title>Контакти - Beauty Nails</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
 
@@ -43,7 +43,7 @@
     <div class="container d-flex justify-content-between">
 
       <div class="logo">
-        <h1><a href="main.html">Beauty Nails</a></h1>
+        <h1><a href="{% url 'home'%}">Beauty Nails</a></h1>
         <!-- Uncomment below if you prefer to use an image logo -->
         <!-- <a href="index.html"><img src="static/images/logo.png" alt="" class="img-fluid"></a>-->
       </div>
@@ -51,28 +51,8 @@
       <nav id="navbar" class="navbar">
         <ul>
           <li><a class="nav-link scrollto " href="{% url 'home'%}">Головна</a></li>
-          <li><a class="nav-link scrollto" href="#about">Про нас</a></li>
-          <li><a class="nav-link scrollto" href="#services">Послуги</a></li>
-          <li><a class="nav-link scrollto " href="#portfolio">Галерея</a></li>
-          <li><a class="nav-link scrollto" href="#team">Наша команда</a></li>
-          <li class="dropdown"><a href="{% url 'add_orders'%}"><span>Онлайн запис</span> <i class="bi bi-chevron-down"></i></a>
-            <ul>
-              <li><a href="#">Drop Down 1</a></li>
-              <li class="dropdown"><a href="#"><span>Deep Drop Down</span> <i class="bi bi-chevron-right"></i></a>
-                <ul>
-                  <li><a href="#">Deep Drop Down 1</a></li>
-                  <li><a href="#">Deep Drop Down 2</a></li>
-                  <li><a href="#">Deep Drop Down 3</a></li>
-                  <li><a href="#">Deep Drop Down 4</a></li>
-                  <li><a href="#">Deep Drop Down 5</a></li>
-                </ul>
-              </li>
-              <li><a href="#">Drop Down 2</a></li>
-              <li><a href="#">Drop Down 3</a></li>
-              <li><a href="#">Drop Down 4</a></li>
-            </ul>
-          </li>
-          <li><a class="nav-link scrollto" href="#contact">Контакти</a></li>
+          <li><a class="nav-link scrollto" href="{% url 'services_index'%}">Послуги</a></li>
+          <li><a class="nav-link scrollto" href="{% url 'add_orders'%}">Онлайн запис</a></li>
         </ul>
         <i class="bi bi-list mobile-nav-toggle"></i>
       </nav><!-- .navbar -->
@@ -89,31 +69,50 @@
         <div class="d-flex justify-content-between align-items-center">
           <ol>
             <li><a href="{%url 'home'%}">Головна</a></li>
-            <li><a href="{%url 'add_orders'%}">Онлайн запис</a></li>
+            <li><a href="{%url 'contacts'%}">Контакти</a></li>
           </ol>
         </div>
 
       </div>
     </section><!-- End Breadcrumbs Section -->
 
-    <section class="inner-page">
-      <div class="container">
-        <p>
-          <h1>{{title}}</h1>
-          {% block content %}
-            <form action="{% url 'add_orders' %}" method="post">
-              {% csrf_token %}
-              <div class="form-error">{{form.non_field_error}}
-
-                {%for f in form%}
-                <p><label class="form-label" for="{{f.id_for_label}}">{{f.label}}:</label>{{f}}</p>
-                <div class="form-error">{{f.error}} </div>
-                {% endfor %}
-              <input type="submit" value="Відправити запис">
-            </form>
-          {% endblock %}
-        </p>
+    <section id="contact" class="contact">
+     <div class="container">
+      
+      <div class="section-title" data-aos="fade-up">
+        <h2>Контакти</h2>
+        <p>Торгово-офісний центр Інтерсіті </p>
       </div>
+      
+      <div class="row no-gutters justify-content-center" data-aos="fade-up">
+      
+      <div class="col-lg-5 d-flex align-items-stretch">
+        <div class="info">
+          <div class="address">
+            <i class="bi bi-geo-alt"></i>
+            <h4>Місцезнаходження:</h4>
+            <p>проспект Чорновола 67г Львів 79000, Україна</p>
+          </div>
+      
+          <div class="email mt-4">
+            <i class="bi bi-envelope"></i>
+            <h4>Електронна пошта:</h4>
+            <p>beautynailslviv@gmail.com</p>
+          </div>
+      
+          <div class="phone mt-4">
+            <i class="bi bi-phone"></i>
+            <h4>Телефонуйте:</h4>
+            <p>+380684786142</p>
+          </div>
+      
+      </div>
+      
+     </div>
+      
+     <div class="col-lg-5 d-flex align-items-stretch">
+        <iframe style="border:0; width: 100%; height: 270px;" src="https://maps.google.com/maps?q=%D0%9B%D1%8C%D0%B2%D1%96%D0%B2%20%D0%BF%D1%80.%20%D0%A7%D0%BE%D1%80%D0%BD%D0%BE%D0%B2%D0%BE%D0%BB%D0%B0%2067%20%D0%B3&t=&z=13&ie=UTF8&iwloc=&output=embed" frameborder="0" allowfullscreen></iframe>
+     </div>
     </section>
 
   </main><!-- End #main -->
@@ -147,8 +146,7 @@
             <h4>Корисні посилання</h4>
             <ul>
               <li><i class="bx bx-chevron-right"></i> <a href="{%url 'home'%}">Головна</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="#">Про нас</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="#">Послуги</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="{% url 'services_index'%}">Послуги</a></li>
               <li><i class="bx bx-chevron-right"></i> <a href="#">Вакансії</a></li>
               <li><i class="bx bx-chevron-right"></i> <a href="#">Політика конфіденційності</a></li>
             </ul>
@@ -157,10 +155,10 @@
           <div class="col-lg-3 col-md-6 footer-links">
             <h4>Наші сервіси</h4>
             <ul>
-              <li><i class="bx bx-chevron-right"></i> <a href="#">Манікюр</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="#">Педикюр</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="#">Нарощення нігтів</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="#">Догляд брів</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="{% url 'manicure'%}">Манікюр</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="{% url 'pedicure'%}">Педикюр</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="{% url 'addnails'%}">Нарощення нігтів</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="{% url 'eyes'%}">Догляд брів</a></li>
             </ul>
           </div>
 
