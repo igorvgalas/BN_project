@@ -27,7 +27,9 @@ urlpatterns = [
     path('orders/', include('orders.urls')),
     path('masters/', include('masters.urls')),
     path('clients/', include('clients.urls')),
-    path('appointments/', include('appointments.urls'))
+    path('appointments/', include('appointments.urls')),
+    path('orders_api/', views.order_list),
+    path('orders_api/<int:id>', views.order_detail)
 ]
 
 #handler404 = pageNotFound
