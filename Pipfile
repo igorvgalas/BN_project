@@ -11,9 +11,9 @@ pylint-django = "*"
 pymysql = "*"
 django-jazzmin = "*"
 django-bootstrap-datepicker-plus = "*"
-django-bootstrap5 = "*"
 django-jquery = "*"
 djangorestframework = "*"
+django-bootstrap-v5 = "*"
 
 [dev-packages]
 pylint = "*"
