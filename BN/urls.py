@@ -16,6 +16,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from . import views
+import debug_toolbar
+
+admin.site.site_header = 'BN_Studio Admin'
+admin.site.index_title = 'Admin'
 
 
 urlpatterns = [
@@ -23,12 +27,8 @@ urlpatterns = [
     path('contacts/', views.contacts, name='contacts'),
     path('admin/', admin.site.urls),
     path('response/', views.add_response, name='add_response'),
-    path('services/', include('services.urls')),
-    path('orders/', include('orders.urls')),
-    path('masters/', include('masters.urls')),
-    path('clients/', include('clients.urls')),
-    path('orders_api/', views.order_list),
-    path('orders_api/<int:id>', views.order_detail)
+    path('__debug__/', include(debug_toolbar.urls)),
+    path('studio/', include('BNstudio.urls')),
 ]
 
 #handler404 = pageNotFound
