@@ -11,7 +11,7 @@ from rest_framework.permissions import AllowAny, DjangoModelPermissions, DjangoM
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet, GenericViewSet
 from rest_framework import status
-from .filters import ProductFilter
+from .filters import ServiceFilter, CustomerFilter
 from .models import ServiceCategory, Service, Appointment, Review, Customer, Staff
 from .serializers import ServiceCategorySerializer, ServiceSerializer, ReviewSerializer, CustomerSerializer, AppointmentSerializers, StaffSerializers
 from .permissions import ViewCustomerHistoryPermission
@@ -20,7 +20,7 @@ class ServiceViewSet(ModelViewSet):
     queryset = Service.objects.all()
     serializer_class = ServiceSerializer
     filter_backends = [DjangoFilterBackend, SearchFilter,OrderingFilter]
-    filterset_class = ProductFilter
+    filterset_class = ServiceFilter
     pagination_class = DefaultPagination
     search_fields = ['name', 'category']
     orderind_fields =['price', ]  
@@ -54,8 +54,11 @@ class ReviewViewSet(ModelViewSet):
 class CustomerViewSet(ModelViewSet):
     queryset = Customer.objects.all()
     serializer_class = CustomerSerializer
-    permission_classes = [IsAdminUser]
+    #permission_classes = [IsAdminUser]
+    filterset_class = CustomerFilter
+    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
 
+    search_fields = ['first_name', 'phone_number']
     @action(detail=True, permission_classes=[ViewCustomerHistoryPermission])
     def history(self, request, pk):
         return Response('ok')

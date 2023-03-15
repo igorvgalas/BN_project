@@ -41,7 +41,7 @@ class CustomerSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Customer
-        fields = ['id', 'user_id', 'first_name', 'last_name','phone_number']
+        fields = ['id', 'user_id', 'first_name','phone_number']
 
 class AppointmentSerializers(serializers.ModelSerializer):
     class Meta:
@@ -54,3 +54,4 @@ class StaffSerializers(serializers.ModelSerializer):
     class Meta:
         model = Staff  
         fields = ['name', 'age']      
+

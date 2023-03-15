@@ -3,7 +3,7 @@ from .models import Customer, Service,ServiceCategory, Staff,Appointment, Paymen
 
 @admin.register(Customer)
 class CustomerAdmin(admin.ModelAdmin):
-    list_display = ('id', 'first_name', 'last_name','phone_number')
+    list_display = ('id', 'first_name','phone_number')
     search_fields = ('phone_number', )
 
 @admin.register(Service)
