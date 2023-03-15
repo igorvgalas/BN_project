@@ -13,7 +13,7 @@ from rest_framework.viewsets import ModelViewSet, GenericViewSet
 from rest_framework import status
 from .filters import ProductFilter
 from .models import ServiceCategory, Service, Appointment, Review, Customer
-from .serializers import ServiceCategorySerializer, ServiceSerializer, ReviewSerializer, CustomerSerializer
+from .serializers import ServiceCategorySerializer, ServiceSerializer, ReviewSerializer, CustomerSerializer, AppointmentSerializers
 from .permissions import ViewCustomerHistoryPermission
 
 class ServiceViewSet(ModelViewSet):
@@ -71,4 +71,12 @@ class CustomerViewSet(ModelViewSet):
             serializer = CustomerSerializer(customer, data=request.data)
             serializer.is_valid(raise_exception=True)
             serializer.save()
-            return Response(serializer.data)    
+            return Response(serializer.data)   
+
+class AppointmentViewSet(ModelViewSet):
+    queryset = Appointment.objects.all()
+    serializer_class = AppointmentSerializers
+    #permission_classes = [IsAuthenticated]   
+    pagination_class = DefaultPagination   
+    search_fields = ['staff', 'date']
+    orderind_fields =['status', ]     
