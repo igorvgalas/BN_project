@@ -12,8 +12,8 @@ from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet, GenericViewSet
 from rest_framework import status
 from .filters import ProductFilter
-from .models import ServiceCategory, Service, Appointment, Review, Customer
-from .serializers import ServiceCategorySerializer, ServiceSerializer, ReviewSerializer, CustomerSerializer, AppointmentSerializers
+from .models import ServiceCategory, Service, Appointment, Review, Customer, Staff
+from .serializers import ServiceCategorySerializer, ServiceSerializer, ReviewSerializer, CustomerSerializer, AppointmentSerializers, StaffSerializers
 from .permissions import ViewCustomerHistoryPermission
 
 class ServiceViewSet(ModelViewSet):
@@ -80,3 +80,8 @@ class AppointmentViewSet(ModelViewSet):
     pagination_class = DefaultPagination   
     search_fields = ['staff', 'date']
     orderind_fields =['status', ]     
+
+class StaffViewSet(ModelViewSet):
+    queryset = Staff.objects.all()
+    serializer_class = StaffSerializers
+    ordering_fields = ['name',]    

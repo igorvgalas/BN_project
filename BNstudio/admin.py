@@ -8,17 +8,17 @@ class CustomerAdmin(admin.ModelAdmin):
 
 @admin.register(Service)
 class ServiceAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'price','category')
+    list_display = ('id', 'title', 'price','category')
     list_filter = ('category', )
 
 
 @admin.register(ServiceCategory)
 class ServiceCategoryAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name')
-    list_filter = ('name', )
+    list_display = ('id', 'title')
+    list_filter = ('title', )
 
 @admin.register(Staff)
-class MasterAdmin(admin.ModelAdmin):
+class StaffAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'age')
     list_editable = ('name', 'age')
 
@@ -36,11 +36,11 @@ class PaymentAdmin(admin.ModelAdmin):
 
 @admin.register(PaymentMethod)
 class PaymentMethodAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name')
+    list_display = ('id', 'title')
 
 @admin.register(Status)
 class StatusAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', )    
+    list_display = ('id', 'title', )    
 
 @admin.register(Avability)
 class AvabilityAdmin(admin.ModelAdmin):

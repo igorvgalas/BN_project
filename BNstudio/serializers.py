@@ -1,11 +1,11 @@
 from decimal import Decimal
 from rest_framework import serializers
-from .models import ServiceCategory, Service, Review, Appointment,Customer
+from .models import ServiceCategory, Service, Review, Appointment,Customer, Staff
 
 class ServiceCategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = ServiceCategory
-        fields = ['id','name','services_count']
+        fields = ['id','title','services_count']
 
     services_count = serializers.IntegerField(read_only=True)   
 
@@ -13,7 +13,7 @@ class ServiceCategorySerializer(serializers.ModelSerializer):
 class ServiceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Service
-        fields = ['id','name','price','category',
+        fields = ['id','title','price','category',
                    'discount_price', 'slug']  
     
     discount_price = serializers.SerializerMethodField(
@@ -25,7 +25,7 @@ class ServiceSerializer(serializers.ModelSerializer):
 class ReviewSerializer(serializers.ModelSerializer):
     class Meta:
         model = Review
-        fields = ['id', 'date', 'name']
+        fields = ['id', 'date', 'title']
 
     def create(self, validated_data):
         service_id = self.context['service_id']
@@ -47,7 +47,10 @@ class AppointmentSerializers(serializers.ModelSerializer):
     class Meta:
         model = Appointment
         fields = ['customer', 'staff', 'service', 
-                  'date','start_time','end_time', 'status']
+                  'date','start_time','end_time']
 
 
-        
+class StaffSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = Staff  
+        fields = ['name', 'age']      

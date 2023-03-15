@@ -17,21 +17,21 @@ class Customer(models.Model):
         ordering = ['id', ]
 
 class ServiceCategory(models.Model):
-    name = models.CharField(max_length=255, blank=True, null=True)
+    title = models.CharField(max_length=255, blank=True, null=True)
     featured_service = models.ForeignKey(
         'Service', on_delete=models.SET_NULL, null=True, related_name='+', blank=True)
     
     def __str__(self):
-        return str(self.name)
+        return str(self.title)
 
     class Meta:
         verbose_name = 'Категорії'
         verbose_name_plural = 'Категорії'
-        ordering = ['id', 'name']
+        ordering = ['id', 'title']
 
 
 class Service(models.Model):
-    name = models.CharField(max_length=255, blank=True, null=True)
+    title = models.CharField(max_length=255, blank=True, null=True)
     slug = models.SlugField(null=True)
     price = models.DecimalField(
         max_digits=6,
@@ -42,12 +42,12 @@ class Service(models.Model):
     last_update = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return str(self.name)
+        return str(self.title)
 
     class Meta:
         verbose_name = 'Послуги'
         verbose_name_plural = 'Послуги'
-        ordering = ['id', 'name']        
+        ordering = ['id', 'title']        
 
 class Staff(models.Model):
     name = models.CharField(max_length=30)
@@ -62,11 +62,11 @@ class Staff(models.Model):
         verbose_name_plural = 'Персонал'
 
 class Status(models.Model): 
-    name =  models.CharField(max_length=30)
+    title =  models.CharField(max_length=30)
     timestamp = models.DateTimeField(auto_now_add=True)     
 
     def __str__(self):
-        return self.name
+        return self.title
 
     class Meta:
         verbose_name = 'Статус'
@@ -102,10 +102,10 @@ class Avability(models.Model):
         verbose_name_plural = 'Доступність'
 
 class PaymentMethod(models.Model):
-    name = models.CharField(max_length=50, blank=True, null=True)
+    title = models.CharField(max_length=50, blank=True, null=True)
 
     def __str__(self):
-        return self.name
+        return self.title
 
     class Meta:
         verbose_name = 'Спосіб оплати'
@@ -121,7 +121,7 @@ class Payment(models.Model):
     payment_method = models.ForeignKey(PaymentMethod, on_delete=models.DO_NOTHING,blank=True, null=True)
 
     def __str__(self):
-        return self.name
+        return self.appointment
 
     class Meta:
         verbose_name = 'Оплата'
@@ -130,5 +130,12 @@ class Payment(models.Model):
 class Review(models.Model):
     service = models.ForeignKey(
         Service, on_delete=models.CASCADE, related_name='reviews')
-    name = models.CharField(max_length=255)
+    title = models.CharField(max_length=255)
     date = models.DateField(auto_now_add=True)
+
+    def __str__(self):
+        return self.service
+
+    class Meta:
+        verbose_name = 'Огляд'
+        verbose_name_plural = 'Огляд'
