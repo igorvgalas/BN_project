@@ -13,6 +13,5 @@ class CustomerFilter(FilterSet):
   class Meta:
     model = Customer
     fields = {
-      'first_name': ['exact'],
       'phone_number': ['exact']
     }    

@@ -26,6 +26,8 @@ urlpatterns = [
     path('', views.home, name='home'),
     path('contacts/', views.contacts, name='contacts'),
     path('admin/', admin.site.urls),
+    path('auth/', include('djoser.urls')),
+    path('auth/', include('djoser.urls.jwt')),
     path('response/', views.add_response, name='add_response'),
     path('__debug__/', include(debug_toolbar.urls)),
     path('studio/', include('BNstudio.urls')),

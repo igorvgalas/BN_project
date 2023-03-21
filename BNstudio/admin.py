@@ -3,8 +3,8 @@ from .models import Customer, Service,ServiceCategory, Staff,Appointment, Paymen
 
 @admin.register(Customer)
 class CustomerAdmin(admin.ModelAdmin):
-    list_display = ('id', 'first_name','phone_number')
-    search_fields = ('phone_number', )
+    list_display = ('id','user_id','phone_number', 'birth_date', 'membership')
+    search_fields = ('phone_number', 'birth_date')
 
 @admin.register(Service)
 class ServiceAdmin(admin.ModelAdmin):

@@ -1,19 +1,46 @@
+from django.contrib import admin
+from django.conf import settings
 from django.db import models
 from uuid import uuid4
 from django.core.validators import MinValueValidator
 
 class Customer(models.Model):
-    first_name = models.CharField(max_length=255, blank=True, null=True)
+    MEMBERSHIP_BRONZE = 'B'
+    MEMBERSHIP_SILVER = 'S'
+    MEMBERSHIP_GOLD = 'G'
+
+    MEMBERSHIP_CHOICES = [
+        (MEMBERSHIP_BRONZE, 'No card'),
+        (MEMBERSHIP_SILVER, '3 percent card'),
+        (MEMBERSHIP_GOLD, '10 percent card'),
+    ]
     phone_number = models.CharField(
         unique=True, max_length=255, blank=True, null=True)
+    birth_date = models.DateField(null=True, blank=True)
+    membership = models.CharField(
+        max_length=1, choices=MEMBERSHIP_CHOICES, default=MEMBERSHIP_BRONZE)
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.first_name
+        return f'{self.user.first_name} {self.user.last_name}'
 
+    @admin.display(ordering='user__first_name')
+    def first_name(self):
+        return self.user.first_name
+
+    @admin.display(ordering='user__last_name')
+    def last_name(self):
+        return self.user.last_name
+    
     class Meta:
+        ordering = ['user__first_name','user__last_name']
+        permissions = [
+            ('view_history', 'Can view history')
+        ]
         verbose_name = 'Клієнти'
         verbose_name_plural = 'Клієнти'
-        ordering = ['id', ]
+
 
 class ServiceCategory(models.Model):
     title = models.CharField(max_length=255, blank=True, null=True)
@@ -86,6 +113,26 @@ class Appointment(models.Model):
     class Meta:
         verbose_name = 'Список замовлень'
         verbose_name_plural = 'Список замовлень'
+
+class AppointmentItem(models.Model):
+    appointment = models.ForeignKey(Appointment, on_delete=models.PROTECT, related_name='items')
+    service = models.ForeignKey(
+        Service, on_delete=models.PROTECT, related_name='orderitems')
+    price = models.DecimalField(max_digits=6, decimal_places=2)
+
+class Cart(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid4)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+
+class CartItem(models.Model):
+    cart = models.ForeignKey(
+        Cart, on_delete=models.CASCADE, related_name='items')
+    service = models.ForeignKey(Service, on_delete=models.CASCADE)
+    
+
+    class Meta:
+        unique_together = [['cart', 'service']]    
 
 class Avability(models.Model):
     staff = models.ForeignKey(Staff,on_delete=models.DO_NOTHING,blank=True, null=True)
