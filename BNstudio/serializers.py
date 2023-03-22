@@ -1,6 +1,7 @@
 from decimal import Decimal
 from django.db import transaction
 from rest_framework import serializers
+from .signals import appointment_created
 from .models import ServiceCategory, Service, Review, Appointment,Customer, Staff, AppointmentItem, Cart, CartItem
 
 class ServiceCategorySerializer(serializers.ModelSerializer):
@@ -46,14 +47,14 @@ class CustomerSerializer(serializers.ModelSerializer):
 
 class CartItemSerializer(serializers.ModelSerializer):
     service = SimpleServiceSerializer()
-    price =serializers.SerializerMethodField
+    price =serializers.SerializerMethodField()
 
     def get_price(self, cart_item):
         return cart_item.service.price
     
     class Meta:
         model = CartItem
-        fields = ['id', 'service']
+        fields = ['id', 'service', 'price']
 
 
 class CartSerializer(serializers.ModelSerializer):
@@ -90,7 +91,6 @@ class AddCartItemSerializer(serializers.ModelSerializer):
         except CartItem.DoesNotExist:
             self.instance = CartItem.objects.create(
                 cart_id=cart_id, **self.validated_data)
-
         return self.instance
 
     class Meta:
@@ -115,14 +115,14 @@ class AppointmentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Appointment
-        fields = ['customer', 'staff', 
-                  'date','start_time','end_time','items']
+        fields = ['id','customer', 
+                  'placed_at','payment','payment_method','items']
 
 
 class UpdateAppointmentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Appointment
-        fields = ['status']
+        fields = ['payment']
 
 
 class CreateAppointmentSerializer(serializers.Serializer):

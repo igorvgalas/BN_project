@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Customer, Service,ServiceCategory, Staff,Appointment, Payment, PaymentMethod, Status, Avability
+from .models import Customer, Service,ServiceCategory, Staff,Appointment,AppointmentItem, PaymentMethod, Avability
 
 @admin.register(Customer)
 class CustomerAdmin(admin.ModelAdmin):
@@ -22,27 +22,24 @@ class StaffAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'age')
     list_editable = ('name', 'age')
 
+class AppointmentItemInline(admin.TabularInline):
+    autocomplete_fields = ['service']
+    min_num = 1
+    max_num = 10
+    model = AppointmentItem
+    extra = 0
 
 @admin.register(Appointment)
 class AppointmentAdmin(admin.ModelAdmin):
-    list_display = ('id','date','start_time', 'end_time','customer', 'service','staff','status')
-    search_fields = ('staff', 'client', 'service')
-    list_filter = ('staff',)
-
-@admin.register(Payment)
-class PaymentAdmin(admin.ModelAdmin):
-    list_display = ('id','appointment', 'amount', 'payment_method')
-    search_fields = ('payment_method',)
+    list_display = ('id','customer','placed_at','payment', 'payment_method')
+    search_fields = ('customer','placed_at','payment_method')
+    list_filter = ('placed_at',)
 
 @admin.register(PaymentMethod)
 class PaymentMethodAdmin(admin.ModelAdmin):
     list_display = ('id', 'title')
 
-@admin.register(Status)
-class StatusAdmin(admin.ModelAdmin):
-    list_display = ('id', 'title', )    
-
 @admin.register(Avability)
 class AvabilityAdmin(admin.ModelAdmin):
-    list_display = ('staff', 'start_time', 'end_time', 'date')
+    list_display = ('staff', 'slot_time', 'date')
     search_fields = ('date',)

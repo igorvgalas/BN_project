@@ -22,7 +22,7 @@ class ServiceViewSet(ModelViewSet):
     filter_backends = [DjangoFilterBackend, SearchFilter,OrderingFilter]
     filterset_class = ServiceFilter
     pagination_class = DefaultPagination
-    #permission_classes = AllowAny
+    permission_classes = AllowAny
     search_fields = ['name', 'category']
     orderind_fields =['price', ]  
 
@@ -38,7 +38,7 @@ class ServiceCategoryViewSet(ModelViewSet):
     queryset = ServiceCategory.objects.annotate(
         services_count = Count('service')).all()
     serializer_class = ServiceCategorySerializer
-    #permission_classes =AllowAny
+    permission_classes =AllowAny
 
     def destroy(self, request, *args, **kwargs):
         if Service.objects.filter(category_id = kwargs['pk']):
@@ -48,15 +48,15 @@ class ReviewViewSet(ModelViewSet):
     serializer_class = ReviewSerializer
 
     def get_queryset(self):
-        return Review.objects.filter(service_id=self.kwargs['service_pk'])
+        return Review.objects.filter(service_id=self.kwargs['service__pk'])
 
     def get_serializer_context(self):
-        return {'service_id': self.kwargs['service_pk']}
+        return {'service_id': self.kwargs['service__pk']}
     
 class CustomerViewSet(CreateModelMixin, RetrieveModelMixin, UpdateModelMixin, GenericViewSet):
     queryset = Customer.objects.all()
     serializer_class = CustomerSerializer
-    #permission_classes = [IsAdminUser]
+    permission_classes = [IsAdminUser]
     filterset_class = CustomerFilter
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
     search_fields = ['id', 'phone_number']
@@ -97,13 +97,14 @@ class CartItemViewSet(ModelViewSet):
             return UpdateCartItemSerializer
         return CartItemSerializer
 
-    def get_serializer_context(self):
-        return {'cart_id': self.kwargs['cart_pk']}
-
     def get_queryset(self):
         return CartItem.objects \
-            .filter(cart_id=self.kwargs['cart_pk']) \
+            .filter(cart_id=self.kwargs['cart__pk']) \
             .select_related('service')
+    
+    def get_serializer_context(self):
+        return {'cart_id': self.kwargs['cart__pk']}
+
 
 
 class AppointmentViewSet(ModelViewSet):
@@ -119,8 +120,8 @@ class AppointmentViewSet(ModelViewSet):
             data=request.data,
             context={'user_id': self.request.user.id})
         serializer.is_valid(raise_exception=True)
-        order = serializer.save()
-        serializer = AppointmentSerializer(order)
+        appointment = serializer.save()
+        serializer = AppointmentSerializer(appointment)
         return Response(serializer.data)
 
     def get_serializer_class(self):

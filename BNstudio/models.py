@@ -87,39 +87,46 @@ class Staff(models.Model):
         verbose_name = 'Персонал'
         verbose_name_plural = 'Персонал'
 
-class Status(models.Model): 
-    title =  models.CharField(max_length=30)
-    timestamp = models.DateTimeField(auto_now_add=True)     
+class PaymentMethod(models.Model):
+    title = models.CharField(max_length=50, blank=True, null=True)
 
     def __str__(self):
         return self.title
 
     class Meta:
-        verbose_name = 'Статус'
-        verbose_name_plural = 'Статус'
+        verbose_name = 'Спосіб оплати'
+        verbose_name_plural = 'Спосіб оплати'
+
 
 class Appointment(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.DO_NOTHING,blank=True, null=True)
-    staff = models.ForeignKey(Staff,on_delete=models.DO_NOTHING, blank=True, null=True)
-    service = models.ForeignKey(Service, on_delete=models.DO_NOTHING,blank=True, null=True)
-    start_time = models.TimeField(blank=True, null=True)
-    end_time = models.TimeField(blank=True, null=True)
-    date = models.DateField(blank=True, null=True)
-    status = models.ForeignKey(Status, on_delete=models.DO_NOTHING,blank=True, null=True)
-
+    placed_at = models.DateTimeField(auto_now_add=True)
+    payment = models.IntegerField(blank=True, null=True)
+    payment_method = models.ForeignKey(PaymentMethod, on_delete=models.DO_NOTHING,blank=True, null=True)
+    
     def __str__(self):
-        return f"{self.staff} + ' ' + {self.service}"
+        return f"{self.customer} + ' ' + {self.placed_at}"
 
     class Meta:
-        verbose_name = 'Список замовлень'
-        verbose_name_plural = 'Список замовлень'
+        verbose_name = 'Виконані замовлення'
+        verbose_name_plural = 'Виконані замовлення'
+        permissions = [
+            ('cancel_order', 'Can cancel order')
+        ]
 
 class AppointmentItem(models.Model):
     appointment = models.ForeignKey(Appointment, on_delete=models.PROTECT, related_name='items')
-    service = models.ForeignKey(
-        Service, on_delete=models.PROTECT, related_name='orderitems')
+    staff = models.ForeignKey(Staff,on_delete=models.DO_NOTHING, blank=True, null=True)
+    service = models.ForeignKey(Service, on_delete=models.DO_NOTHING,blank=True, null=True)
     price = models.DecimalField(max_digits=6, decimal_places=2)
+    date = models.DateField(blank=True, null=True)
+    start_time = models.TimeField(blank=True, null=True)
+    end_time = models.TimeField(blank=True, null=True)
 
+    class Meta:
+        verbose_name = 'Записи'
+        verbose_name_plural = 'Записи'    
+    
 class Cart(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid4)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -136,8 +143,7 @@ class CartItem(models.Model):
 
 class Avability(models.Model):
     staff = models.ForeignKey(Staff,on_delete=models.DO_NOTHING,blank=True, null=True)
-    start_time=models.TimeField(blank=True, null=True)
-    end_time=models.TimeField(blank=True, null=True)
+    slot_time=models.TimeField(blank=True, null=True)
     date=models.DateField(blank=True, null=True)
 
     def __str__(self):
@@ -146,32 +152,6 @@ class Avability(models.Model):
     class Meta:
         verbose_name = 'Доступність'
         verbose_name_plural = 'Доступність'
-
-class PaymentMethod(models.Model):
-    title = models.CharField(max_length=50, blank=True, null=True)
-
-    def __str__(self):
-        return self.title
-
-    class Meta:
-        verbose_name = 'Спосіб оплати'
-        verbose_name_plural = 'Спосіб оплати'
-
-
-class Payment(models.Model):
-    appointment = models.ForeignKey(Appointment, on_delete=models.DO_NOTHING,blank=True, null=True)
-    amount = models.DecimalField(
-        max_digits=6,
-        decimal_places=2,
-        validators=[MinValueValidator(1)])
-    payment_method = models.ForeignKey(PaymentMethod, on_delete=models.DO_NOTHING,blank=True, null=True)
-
-    def __str__(self):
-        return self.appointment
-
-    class Meta:
-        verbose_name = 'Оплата'
-        verbose_name_plural = 'Оплата'
 
 class Review(models.Model):
     service = models.ForeignKey(
