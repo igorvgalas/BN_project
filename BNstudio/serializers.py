@@ -107,7 +107,7 @@ class AppointmentItemSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = AppointmentItem
-        fields = ['id', 'service', 'price']
+        fields = ['id', 'service','staff','date', 'time_slot' ]
 
 
 class AppointmentSerializer(serializers.ModelSerializer):

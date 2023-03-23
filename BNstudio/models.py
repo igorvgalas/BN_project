@@ -99,13 +99,21 @@ class PaymentMethod(models.Model):
 
 
 class Appointment(models.Model):
+    PAYMENT_STATUS_PENDING = 'P'
+    PAYMENT_STATUS_COMPLETE = 'C'
+    PAYMENT_STATUS_FAILED = 'F'
+    PAYMENT_CHOICES = [
+        (PAYMENT_STATUS_PENDING, 'Pending'),
+        (PAYMENT_STATUS_COMPLETE, 'Complete'),
+        (PAYMENT_STATUS_FAILED, 'Failed')
+    ]
     customer = models.ForeignKey(Customer, on_delete=models.DO_NOTHING,blank=True, null=True)
     placed_at = models.DateTimeField(auto_now_add=True)
-    payment = models.IntegerField(blank=True, null=True)
+    payment = models.CharField(blank=True, null=True, max_length=50, choices=PAYMENT_CHOICES, default=PAYMENT_STATUS_PENDING)
     payment_method = models.ForeignKey(PaymentMethod, on_delete=models.DO_NOTHING,blank=True, null=True)
     
     def __str__(self):
-        return f"{self.customer} + ' ' + {self.placed_at}"
+        return f"{self.customer} {self.placed_at.date()}"
 
     class Meta:
         verbose_name = 'Виконані замовлення'
@@ -120,8 +128,7 @@ class AppointmentItem(models.Model):
     service = models.ForeignKey(Service, on_delete=models.DO_NOTHING,blank=True, null=True)
     price = models.DecimalField(max_digits=6, decimal_places=2)
     date = models.DateField(blank=True, null=True)
-    start_time = models.TimeField(blank=True, null=True)
-    end_time = models.TimeField(blank=True, null=True)
+    time_slot = models.TimeField(blank=True, null=True)
 
     class Meta:
         verbose_name = 'Записи'
@@ -143,7 +150,7 @@ class CartItem(models.Model):
 
 class Avability(models.Model):
     staff = models.ForeignKey(Staff,on_delete=models.DO_NOTHING,blank=True, null=True)
-    slot_time=models.TimeField(blank=True, null=True)
+    time_slot=models.TimeField(blank=True, null=True)
     date=models.DateField(blank=True, null=True)
 
     def __str__(self):
@@ -152,6 +159,11 @@ class Avability(models.Model):
     class Meta:
         verbose_name = 'Доступність'
         verbose_name_plural = 'Доступність'
+
+'''class TimeSlots(models.Model):
+    title = models.CharField(max_length=50, null=True, blank=True)
+    timestamp = models.TimeField(blank=True, null=True)'''
+
 
 class Review(models.Model):
     service = models.ForeignKey(
