@@ -151,7 +151,6 @@ class CartItem(models.Model):
 
 class Avability(models.Model):
     staff = models.ForeignKey(Staff,on_delete=models.DO_NOTHING,blank=True, null=True)
-    time_slot=models.TimeField(blank=True, null=True)
     date=models.DateField(blank=True, null=True)
 
     def __str__(self):
@@ -160,10 +159,6 @@ class Avability(models.Model):
     class Meta:
         verbose_name = 'Доступність'
         verbose_name_plural = 'Доступність'
-
-'''class TimeSlots(models.Model):
-    title = models.CharField(max_length=50, null=True, blank=True)
-    timestamp = models.TimeField(blank=True, null=True)'''
 
 
 class Review(models.Model):

@@ -99,5 +99,5 @@ class PaymentMethodAdmin(admin.ModelAdmin):
 
 @admin.register(Avability)
 class AvabilityAdmin(admin.ModelAdmin):
-    list_display = ['staff', 'time_slot', 'date']
-    search_fields = ['date']
+    list_display = ['id','staff', 'date']
+    search_fields = ['date', 'staff']

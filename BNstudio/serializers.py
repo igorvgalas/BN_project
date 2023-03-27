@@ -3,7 +3,7 @@ from django.db import transaction
 from django.utils import timezone
 from rest_framework import serializers
 from .signals import appointment_created
-from .models import ServiceCategory, Service, Review, Appointment,Customer, Staff, Cart, CartItem, AppointmentItem
+from .models import ServiceCategory, Service, Review, Appointment,Customer, Staff, Cart, CartItem, AppointmentItem, Avability
 
 class ServiceCategorySerializer(serializers.ModelSerializer):
     class Meta:
@@ -125,13 +125,10 @@ class UpdateAppointmentSerializer(serializers.ModelSerializer):
 
 class CreateAppointmentSerializer(serializers.Serializer):
     cart_id = serializers.UUIDField()
-    total_price = serializers.DecimalField(
-        max_digits=6,
-        decimal_places=2,
-        read_only=True,)
     date = serializers.DateField()
-    staff = serializers.IntegerField()
+    staff_id = serializers.IntegerField()
     time_slot = serializers.TimeField()
+    total_price = serializers.DecimalField(max_digits=6,decimal_places=2,read_only=True,)
 
 
     def validate_cart_id(self, cart_id):
@@ -139,33 +136,55 @@ class CreateAppointmentSerializer(serializers.Serializer):
             raise serializers.ValidationError(
                 'No cart with the given ID was found.')
         if CartItem.objects.filter(cart_id=cart_id).count() == 0:
-            raise serializers.ValidationError('The cart is empty.')
+            raise serializers.ValidationError(
+                'The cart is empty.')
         return cart_id
     
     def validate_date(self, date):
         if date < timezone.now().date():
             raise serializers.ValidationError('Date cannot be in the past')
-
-        # You can add additional validation logic here
+        if not date:
+            raise serializers.ValidationError(
+                'Date is required.')
         return date
     
-    def validate_staff(self, staff_id):
-        try:
-            staff = Staff.objects.get(name=staff_id)
-        except Staff.DoesNotExist:
-            raise serializers.ValidationError('Invalid staff ID')
-
-        return staff
+    
+    def validate_staff_id(self, staff_id):
+        available_staff = Avability.objects.filter(
+            date=self.validated_data['date'], 
+            staff_id=staff_id
+        )
+        if not available_staff.exists():
+            raise serializers.ValidationError(
+                'Selected staff is not available on the given date.')
+        
+        return staff_id
 
     def validate_time_slot(self, time_slot):
-        # You can add validation logic here
+        appointments = Appointment.objects.filter(
+            date=self.validated_data['date'], 
+            staff_id=self.validated_data['staff_id']
+        )
+        
+        booked_time_slots = appointments.values_list(
+            'time_slot', flat=True
+        )
+        
+        available_time_slots = ['10:00', '11:30', '13:00', '14:30', '16:00', '17:30']
+        for time_slot in booked_time_slots:
+            if time_slot in available_time_slots:
+                available_time_slots.remove(time_slot)
+        
+        if not available_time_slots:
+            raise serializers.ValidationError(
+                'Selected staff is fully booked on the given date.')
         return time_slot
     
     def save(self, **kwargs):
         with transaction.atomic():
             cart_id = self.validated_data['cart_id']
             customer = Customer.objects.get(user_id=self.context['user_id'])
-            staff = self.validated_data['staff']
+            staff_id = self.validated_data['staff_id']
             date = self.validated_data['date']
             time_slot = self.validated_data['time_slot']
             cart = Cart.objects.get(pk=cart_id)
@@ -174,9 +193,10 @@ class CreateAppointmentSerializer(serializers.Serializer):
             appointment = Appointment.objects.create(
                 customer=customer,
                 total_price=total_price,
-                staff=staff,
+                staff=staff_id,
                 date=date,
-                time_slot=time_slot,)
+                time_slot=time_slot,
+            )
 
             cart_items = CartItem.objects.select_related('service').filter(cart_id=cart_id)
             
