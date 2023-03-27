@@ -2,7 +2,7 @@ from django.db.models.aggregates import Count
 from django.utils.html import urlencode, format_html
 from django.contrib import admin
 from django.urls import reverse
-from .models import Customer, Service,ServiceCategory, Staff,Appointment,AppointmentItem, PaymentMethod, Avability
+from .models import Customer, Service,ServiceCategory, Staff,Appointment, PaymentMethod, Avability, AppointmentItem
 
 @admin.register(Customer)
 class CustomerAdmin(admin.ModelAdmin):
@@ -75,12 +75,15 @@ class AppointmentItemInline(admin.TabularInline):
 class AppointmentAdmin(admin.ModelAdmin):
     autocomplete_fields = ['customer', 'payment_method']
     inlines = [AppointmentItemInline]
-    list_display = ['id','customer','membership','placed_at','payment', 'payment_method']
+    list_display = ['id','customer','placed_at','payment', 'payment_method', 'total_price', 'membership']
     search_fields = ['customer','placed_at','payment_method']
     list_filter = ['placed_at']
     
-    def membership (self, appointment):
-        return appointment.customer.membership
+    def membership(self, appointment):
+        if appointment.customer:
+            return appointment.customer.membership
+        else:
+            return "N/A"
     
 
 @admin.register(AppointmentItem)

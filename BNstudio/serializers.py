@@ -1,8 +1,9 @@
 from decimal import Decimal
 from django.db import transaction
+from django.utils import timezone
 from rest_framework import serializers
 from .signals import appointment_created
-from .models import ServiceCategory, Service, Review, Appointment,Customer, Staff, AppointmentItem, Cart, CartItem
+from .models import ServiceCategory, Service, Review, Appointment,Customer, Staff, Cart, CartItem, AppointmentItem
 
 class ServiceCategorySerializer(serializers.ModelSerializer):
     class Meta:
@@ -111,22 +112,27 @@ class AppointmentItemSerializer(serializers.ModelSerializer):
 
 
 class AppointmentSerializer(serializers.ModelSerializer):
-    items = AppointmentItemSerializer(many=True)
-
+    
     class Meta:
         model = Appointment
-        fields = ['id','customer', 
-                  'placed_at','payment','payment_method','items']
-
+        fields = ['id','customer','placed_at','payment','payment_method', 'total_price']
 
 class UpdateAppointmentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Appointment
-        fields = ['payment']
+        fields = ['payment', 'payment_method']
 
 
 class CreateAppointmentSerializer(serializers.Serializer):
     cart_id = serializers.UUIDField()
+    total_price = serializers.DecimalField(
+        max_digits=6,
+        decimal_places=2,
+        read_only=True,)
+    date = serializers.DateField()
+    staff = serializers.IntegerField()
+    time_slot = serializers.TimeField()
+
 
     def validate_cart_id(self, cart_id):
         if not Cart.objects.filter(pk=cart_id).exists():
@@ -135,28 +141,55 @@ class CreateAppointmentSerializer(serializers.Serializer):
         if CartItem.objects.filter(cart_id=cart_id).count() == 0:
             raise serializers.ValidationError('The cart is empty.')
         return cart_id
+    
+    def validate_date(self, date):
+        if date < timezone.now().date():
+            raise serializers.ValidationError('Date cannot be in the past')
 
+        # You can add additional validation logic here
+        return date
+    
+    def validate_staff(self, staff_id):
+        try:
+            staff = Staff.objects.get(name=staff_id)
+        except Staff.DoesNotExist:
+            raise serializers.ValidationError('Invalid staff ID')
+
+        return staff
+
+    def validate_time_slot(self, time_slot):
+        # You can add validation logic here
+        return time_slot
+    
     def save(self, **kwargs):
         with transaction.atomic():
             cart_id = self.validated_data['cart_id']
+            customer = Customer.objects.get(user_id=self.context['user_id'])
+            staff = self.validated_data['staff']
+            date = self.validated_data['date']
+            time_slot = self.validated_data['time_slot']
+            cart = Cart.objects.get(pk=cart_id)
+            total_price = sum(item.service.price for item in cart.items.all())
 
-            customer = Customer.objects.get(
-                user_id=self.context['user_id'])
-            appointment = Appointment.objects.create(customer=customer)
+            appointment = Appointment.objects.create(
+                customer=customer,
+                total_price=total_price,
+                staff=staff,
+                date=date,
+                time_slot=time_slot,)
 
-            cart_items = CartItem.objects \
-                .select_related('service') \
-                .filter(cart_id=cart_id)
+            cart_items = CartItem.objects.select_related('service').filter(cart_id=cart_id)
+            
             appointment_items = [
                 AppointmentItem(
                     appointment=appointment,
                     service=item.service,
-                    price=item.service.price
+                    price=item.service.price,
                 ) for item in cart_items
             ]
             AppointmentItem.objects.bulk_create(appointment_items)
 
-            Cart.objects.filter(pk=cart_id).delete()
+            cart.delete()
 
             appointment_created.send_robust(self.__class__, appointment=appointment)
 

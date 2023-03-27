@@ -111,13 +111,14 @@ class Appointment(models.Model):
     placed_at = models.DateTimeField(auto_now_add=True)
     payment = models.CharField(blank=True, null=True, max_length=50, choices=PAYMENT_CHOICES, default=PAYMENT_STATUS_PENDING)
     payment_method = models.ForeignKey(PaymentMethod, on_delete=models.DO_NOTHING,blank=True, null=True)
+    total_price = models.DecimalField(max_digits=6, decimal_places=2, validators=[MinValueValidator(1)], default=0)
     
     def __str__(self):
         return f"{self.customer} {self.placed_at.date()}"
 
     class Meta:
-        verbose_name = 'Виконані замовлення'
-        verbose_name_plural = 'Виконані замовлення'
+        verbose_name = 'Замовлення'
+        verbose_name_plural = 'Замовлення'
         permissions = [
             ('cancel_order', 'Can cancel order')
         ]
