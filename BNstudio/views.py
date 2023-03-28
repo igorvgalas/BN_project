@@ -12,8 +12,8 @@ from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet, GenericViewSet
 from rest_framework import status
 from .filters import ServiceFilter, CustomerFilter
-from .models import ServiceCategory, Service, Appointment, Review, Customer, Staff, Cart, CartItem
-from .serializers import ServiceCategorySerializer, ServiceSerializer, ReviewSerializer, CustomerSerializer, AppointmentSerializer,CreateAppointmentSerializer,UpdateAppointmentSerializer, StaffSerializer, CartSerializer, CartItemSerializer, AddCartItemSerializer, UpdateCartItemSerializer
+from .models import ServiceCategory, Service, Appointment, Review, Customer, Staff, Cart, CartItem, AppointmentItem
+from .serializers import ServiceCategorySerializer,AppointmentItemSerializer, AddCartItemSerializer, ServiceSerializer, ReviewSerializer, CustomerSerializer, AppointmentSerializer,CreateAppointmentSerializer,UpdateAppointmentSerializer, StaffSerializer, CartSerializer, CartItemSerializer, AddCartItemSerializer, UpdateCartItemSerializer, UpdateAppointmentItemSerializers
 from .permissions import ViewCustomerHistoryPermission
 
 class ServiceViewSet(ModelViewSet):
@@ -141,6 +141,23 @@ class AppointmentViewSet(ModelViewSet):
             'id').get(user_id=user.id)
         return Appointment.objects.filter(customer_id=customer_id)
 
+class AppointmentItemViewSet(ModelViewSet):
+    http_method_names = ['get', 'post', 'patch', 'delete']
+
+    def get_permissions(self):
+        if self.request.method in ['DELETE','POST']:
+            return [IsAdminUser()]
+        return [IsAuthenticated()]
+    
+    def get_queryset(self):
+        return AppointmentItem.objects \
+            .filter(appointment_id=self.kwargs['appointment__pk']) \
+            .select_related('service')
+    
+    def get_serializer_class(self):
+        if self.request.method == 'PATCH':
+            return UpdateAppointmentItemSerializers
+        return AppointmentItemSerializer
 
 class StaffViewSet(ModelViewSet):
     queryset = Staff.objects.all()

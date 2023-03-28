@@ -114,7 +114,7 @@ class Appointment(models.Model):
     total_price = models.DecimalField(max_digits=6, decimal_places=2, validators=[MinValueValidator(1)], default=0)
     
     def __str__(self):
-        return f"{self.customer} {self.placed_at.date()}"
+        return str(self.id)
 
     class Meta:
         verbose_name = 'Замовлення'
@@ -130,7 +130,10 @@ class AppointmentItem(models.Model):
     price = models.DecimalField(max_digits=6, decimal_places=2)
     date = models.DateField(blank=True, null=True)
     time_slot = models.TimeField(blank=True, null=True)
-
+    
+    def __str__(self):
+        return str(self.id)
+    
     class Meta:
         verbose_name = 'Записи'
         verbose_name_plural = 'Записи'    
