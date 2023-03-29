@@ -7,13 +7,13 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.decorators import action, permission_classes
 from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.mixins import CreateModelMixin, DestroyModelMixin, RetrieveModelMixin, UpdateModelMixin
-from rest_framework.permissions import AllowAny, DjangoModelPermissions, DjangoModelPermissionsOrAnonReadOnly, IsAdminUser, IsAuthenticated
+from rest_framework.permissions import AllowAny,IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet, GenericViewSet
 from rest_framework import status
 from .filters import ServiceFilter, CustomerFilter
-from .models import ServiceCategory, Service, Appointment, Review, Customer, Staff, Cart, CartItem, AppointmentItem
-from .serializers import ServiceCategorySerializer,AppointmentItemSerializer, AddCartItemSerializer, ServiceSerializer, ReviewSerializer, CustomerSerializer, AppointmentSerializer,CreateAppointmentSerializer,UpdateAppointmentSerializer, StaffSerializer, CartSerializer, CartItemSerializer, AddCartItemSerializer, UpdateCartItemSerializer, UpdateAppointmentItemSerializers
+from .models import *
+from .serializers import *
 from .permissions import ViewCustomerHistoryPermission
 
 class ServiceViewSet(ModelViewSet):
@@ -143,7 +143,8 @@ class AppointmentViewSet(ModelViewSet):
 
 class AppointmentItemViewSet(ModelViewSet):
     http_method_names = ['get', 'post', 'patch', 'delete']
-
+    serializer_class = AppointmentItemSerializer
+    
     def get_permissions(self):
         if self.request.method in ['DELETE','POST']:
             return [IsAdminUser()]
@@ -154,10 +155,6 @@ class AppointmentItemViewSet(ModelViewSet):
             .filter(appointment_id=self.kwargs['appointment__pk']) \
             .select_related('service')
     
-    def get_serializer_class(self):
-        if self.request.method == 'PATCH':
-            return UpdateAppointmentItemSerializers
-        return AppointmentItemSerializer
 
 class StaffViewSet(ModelViewSet):
     queryset = Staff.objects.all()

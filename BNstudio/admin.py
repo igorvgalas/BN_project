@@ -67,7 +67,7 @@ class StaffAdmin(admin.ModelAdmin):
 
 class AppointmentItemInline(admin.TabularInline):
     model = AppointmentItem
-    autocomplete_fields = ['staff', 'service']
+    autocomplete_fields = ['service', 'appointment']
     extra = 1
 
 
@@ -75,9 +75,9 @@ class AppointmentItemInline(admin.TabularInline):
 class AppointmentAdmin(admin.ModelAdmin):
     autocomplete_fields = ['customer', 'payment_method']
     inlines = [AppointmentItemInline]
-    list_display = ['id','customer','placed_at','payment', 'payment_method', 'total_price', 'membership']
-    search_fields = ['customer','placed_at','payment_method']
-    list_filter = ['placed_at']
+    list_display = ['id','customer','placed_at','payment', 'payment_method', 'total_price', 'membership','staff','date', 'time_slot']
+    search_fields = ['customer','placed_at','payment_method', 'date', 'staff']
+    list_filter = ['placed_at', 'staff', 'date']
     
     def membership(self, appointment):
         if appointment.customer:
@@ -88,8 +88,8 @@ class AppointmentAdmin(admin.ModelAdmin):
 
 @admin.register(AppointmentItem)
 class AppointmentItemAdmin(admin.ModelAdmin):
-    autocomplete_fields = ['staff', 'service', 'appointment']
-    list_display = ['appointment', 'staff', 'service', 'price', 'date','time_slot']
+    autocomplete_fields = ['service', 'appointment']
+    list_display = ['appointment', 'service', 'price']
 
 
 @admin.register(PaymentMethod)

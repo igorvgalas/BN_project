@@ -72,7 +72,9 @@ class CartSerializer(serializers.ModelSerializer):
 
 
 class AddCartItemSerializer(serializers.ModelSerializer):
-    service_id = serializers.IntegerField()
+    service_id = serializers.PrimaryKeyRelatedField(
+            queryset=Service.objects.all(),
+            required=True)
 
     def validate_service_id(self, value):
         if not Service.objects.filter(pk=value).exists():
@@ -108,7 +110,7 @@ class AppointmentItemSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = AppointmentItem
-        fields = ['id','staff','date', 'time_slot', 'service']
+        fields = ['id','service']
 
 
 class AppointmentSerializer(serializers.ModelSerializer):
@@ -116,7 +118,7 @@ class AppointmentSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Appointment
-        fields = ['id','customer','items','placed_at','payment','payment_method', 'total_price']
+        fields = ['id','customer','items','placed_at','date','staff','time_slot','payment','payment_method', 'total_price']
 
 class UpdateAppointmentSerializer(serializers.ModelSerializer):
     class Meta:
@@ -127,29 +129,54 @@ class UpdateAppointmentSerializer(serializers.ModelSerializer):
 class CreateAppointmentSerializer(serializers.Serializer):
     cart_id = serializers.UUIDField()
     total_price = serializers.DecimalField(max_digits=6,decimal_places=2,read_only=True,)
+    staff_id = serializers.PrimaryKeyRelatedField(
+            queryset=Staff.objects.all(),
+            required=True)
+    time_slot = serializers.ChoiceField(
+            choices=[('10:00', '10:00'), ('11:30', '11:30'), ('13:00', '13:00'), 
+                 ('14:30', '14:30'), ('16:00', '16:00'), ('17:30', '17:30')],
+            required=True)
+    date = serializers.DateField(required=True)
 
+    def validate(self, data):
+        cart_id = data['cart_id']
+        staff_id = data['staff_id']
+        date = data['date']
+        time_slot = data['time_slot']
 
-    def validate_cart_id(self, cart_id):
         if not Cart.objects.filter(pk=cart_id).exists():
             raise serializers.ValidationError(
                 'No cart with the given ID was found.')
         if CartItem.objects.filter(cart_id=cart_id).count() == 0:
             raise serializers.ValidationError(
                 'The cart is empty.')
-        return cart_id
+
+        # Check if the staff is available for the given date and time_slot
+        appointment_count = Appointment.objects.filter(
+            staff_id=staff_id, date=date, time_slot=time_slot).count()
+        if appointment_count > 0:
+            raise serializers.ValidationError(
+                f"{staff_id} is not available for {time_slot} on {date}. Please select another time.")
+
+        return data
     
     
     def save(self, **kwargs):
         with transaction.atomic():
             cart_id = self.validated_data['cart_id']
+            staff_id = self._validated_data['staff_id']
+            date = self._validated_data['date']
+            time_slot = self._validated_data['time_slot']
             customer = Customer.objects.get(user_id=self.context['user_id'])
             cart = Cart.objects.get(pk=cart_id)
             total_price = sum(item.service.price for item in cart.items.all())
 
             appointment = Appointment.objects.create(
                 customer=customer,
-                total_price=total_price
-            )
+                total_price=total_price,
+                staff = staff_id,
+                time_slot= time_slot,
+                date=date)
 
             cart_items = CartItem.objects.select_related('service').filter(cart_id=cart_id)
             
@@ -168,36 +195,6 @@ class CreateAppointmentSerializer(serializers.Serializer):
 
             return appointment
               
-class UpdateAppointmentItemSerializers(serializers.ModelSerializer):
-    staff_id = serializers.PrimaryKeyRelatedField(
-            queryset=Staff.objects.all(),
-            required=True
-    )
-    time_slot = serializers.ChoiceField(
-            choices=[('10:00', '10:00'), ('11:30', '11:30'), ('13:00', '13:00'), 
-                 ('14:30', '14:30'), ('16:00', '16:00'), ('17:30', '17:30')],
-            required=True
-    )
-    date = serializers.DateField(required=True)
-
-    class Meta:
-        model = AppointmentItem
-        fields = ['staff_id', 'date', 'time_slot']
-
-    def validate(self, data):
-        staff = data['staff_id']
-        date = data['date']
-        time_slot = data['time_slot']
-
-        # Check if the staff is available for the given date and time_slot
-        appointment_count = Appointment.objects.filter(
-            staff=staff, date=date, time_slot=time_slot).count()
-        if appointment_count > 0:
-            raise serializers.ValidationError(
-                f"{staff} is not available for {time_slot} on {date}. Please select another time.")
-
-        return data
-
 
 class StaffSerializer(serializers.ModelSerializer):
     class Meta:
