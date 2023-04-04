@@ -6,21 +6,23 @@ from .signals import appointment_created
 from .models import ServiceCategory, Service, Review, Appointment,Customer, Staff, Cart, CartItem, AppointmentItem, Avability
 
 class ServiceCategorySerializer(serializers.ModelSerializer):
+    services_count = serializers.IntegerField(read_only=True)   
+    
     class Meta:
         model = ServiceCategory
         fields = ['id','title','services_count']
 
-    services_count = serializers.IntegerField(read_only=True)   
 
 
 class ServiceSerializer(serializers.ModelSerializer):
+    discount_price = serializers.SerializerMethodField(
+        method_name='price_with_discount')           
+    
     class Meta:
         model = Service
         fields = ['id','title','price','category',
                    'discount_price', 'slug']  
     
-    discount_price = serializers.SerializerMethodField(
-        method_name='price_with_discount')           
 
     def price_with_discount(self, service: Service):
         return service.price * Decimal(0.9)
@@ -48,14 +50,13 @@ class CustomerSerializer(serializers.ModelSerializer):
 
 class CartItemSerializer(serializers.ModelSerializer):
     service = SimpleServiceSerializer()
-    price =serializers.SerializerMethodField()
 
     def get_price(self, cart_item):
         return cart_item.service.price
     
     class Meta:
         model = CartItem
-        fields = ['id', 'service', 'price']
+        fields = ['id', 'service']
 
 
 class CartSerializer(serializers.ModelSerializer):
@@ -77,15 +78,16 @@ class AddCartItemSerializer(serializers.ModelSerializer):
             required=True)
 
     def validate_service_id(self, value):
-        if not Service.objects.filter(pk=value).exists():
+        pk=value.pk
+        if not Service.objects.filter(pk=pk).exists():
             raise serializers.ValidationError(
                 'No service with the given ID was found.')
-        return value
+        return pk
 
     def save(self, **kwargs):
         cart_id = self.context['cart_id']
         service_id = self.validated_data['service_id']
-
+        print(self.context)
         try:
             cart_item = CartItem.objects.get(
                 cart_id=cart_id, service_id=service_id)
@@ -98,7 +100,7 @@ class AddCartItemSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CartItem
-        fields = ['id', 'service_id']
+        fields = ['id','service_id']
 
 class UpdateCartItemSerializer(serializers.ModelSerializer):
     class Meta:
@@ -199,5 +201,4 @@ class CreateAppointmentSerializer(serializers.Serializer):
 class StaffSerializer(serializers.ModelSerializer):
     class Meta:
         model = Staff  
-        fields = ['name', 'age']      
-
+        fields = ['id','name', 'age']      

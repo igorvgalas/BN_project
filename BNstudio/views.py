@@ -22,7 +22,7 @@ class ServiceViewSet(ModelViewSet):
     filter_backends = [DjangoFilterBackend, SearchFilter,OrderingFilter]
     filterset_class = ServiceFilter
     pagination_class = DefaultPagination
-    permission_classes = AllowAny
+    #permission_classes = AllowAny
     search_fields = ['name', 'category']
     orderind_fields =['price', ]  
 
@@ -31,18 +31,20 @@ class ServiceViewSet(ModelViewSet):
 
     def destroy(self, request, *args, **kwargs):
         if Appointment.objects.filter(service_id=kwargs['pk']).count() > 0:
-            return Response({'error': 'Service cannot be deleted because it is associated with an appointment.'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+            return Response({'error': 'Service cannot be deleted because it is associated with an appointment.'}, 
+                    status=status.HTTP_405_METHOD_NOT_ALLOWED)
         return super().destroy(request, *args, **kwargs)          
 
 class ServiceCategoryViewSet(ModelViewSet):
     queryset = ServiceCategory.objects.annotate(
         services_count = Count('service')).all()
     serializer_class = ServiceCategorySerializer
-    permission_classes =AllowAny
+    #permission_classes =AllowAny
 
     def destroy(self, request, *args, **kwargs):
         if Service.objects.filter(category_id = kwargs['pk']):
-            return Response({'error': 'Category cannot be deleted because it includes one or more services.'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+            return Response({'error': 'Category cannot be deleted because it includes one or more services.'}, 
+                    status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
 class ReviewViewSet(ModelViewSet):
     serializer_class = ReviewSerializer
@@ -56,7 +58,7 @@ class ReviewViewSet(ModelViewSet):
 class CustomerViewSet(CreateModelMixin, RetrieveModelMixin, UpdateModelMixin, GenericViewSet):
     queryset = Customer.objects.all()
     serializer_class = CustomerSerializer
-    permission_classes = [IsAdminUser]
+    #permission_classes = [IsAdminUser]
     filterset_class = CustomerFilter
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
     search_fields = ['id', 'phone_number']
@@ -104,7 +106,6 @@ class CartItemViewSet(ModelViewSet):
     
     def get_serializer_context(self):
         return {'cart_id': self.kwargs['cart__pk']}
-
 
 
 class AppointmentViewSet(ModelViewSet):
@@ -155,9 +156,11 @@ class AppointmentItemViewSet(ModelViewSet):
             .filter(appointment_id=self.kwargs['appointment__pk']) \
             .select_related('service')
     
+    def get_serializer_context(self):
+        return {'appointment_id': self.kwargs['appointment__pk']}
 
 class StaffViewSet(ModelViewSet):
     queryset = Staff.objects.all()
     serializer_class = StaffSerializer
-    permission_classes = AllowAny
-    ordering_fields = ['name',]    
+    #permission_classes = AllowAny
+    ordering_fields = ['id','name']    

@@ -1,3 +1,5 @@
 db.sqlite3
 BN/settings.py
 token.txt
+static/
+tamplates/
