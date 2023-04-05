@@ -2,16 +2,25 @@ from django.db.models.aggregates import Count
 from django.utils.html import urlencode, format_html
 from django.contrib import admin
 from django.urls import reverse
-from .models import Customer, Service,ServiceCategory, Staff,Appointment, PaymentMethod, Avability, AppointmentItem
+from . import models
 
-@admin.register(Customer)
+
+
+    
+@admin.register(models.Customer)
 class CustomerAdmin(admin.ModelAdmin):
     autocomplete_fields = ['user']
-    list_display = ['first_name', 'last_name','phone_number', 'birth_date', 'membership', 'appointments']
+    list_display = ['first_name', 'last_name','phone_number', 'birth_date', 'membership', 'appointments', 'image']
     list_editable = ['membership']
     list_per_page = 10
     list_select_related = ['user']
     search_fields = ['user__first_name__istartswith', 'user__last_name__istartswith']
+    readonly_fields = ['thumbnail']
+    
+    def thumbnail(self, instance):
+        if instance.image.name != '':
+            return format_html(f'<img src="{instance.image.url}" class="thumbnail" />')
+        return ''
     
     @admin.display(ordering='appointments_count')
     def appointments(self, customer):
@@ -27,24 +36,25 @@ class CustomerAdmin(admin.ModelAdmin):
         return super().get_queryset(request).annotate(
             appointments_count=Count('appointment'))
 
-@admin.register(Service)
+@admin.register(models.Service)
 class ServiceAdmin(admin.ModelAdmin):
     autocomplete_fields = ['category']
     prepopulated_fields = {
        'slug': ['title']
     }
-    list_display = ['id', 'title', 'price','category','last_update']
+    list_display = ['id', 'title', 'price','category','last_update', 'make_time']
     list_filter = ['category', 'last_update']
-    list_editable = ['price']
+    list_editable = ['price', 'make_time']
     search_fields = ['title', 'category__istartswith']
 
 
 
-@admin.register(ServiceCategory)
+@admin.register(models.ServiceCategory)
 class ServiceCategoryAdmin(admin.ModelAdmin):
     list_display = ['id', 'title', 'service_count']
     list_filter = ['title']
     search_fields = ['title']
+    
     @admin.display(ordering='services_count')
     def service_count(self, category):
         url = (
@@ -59,19 +69,19 @@ class ServiceCategoryAdmin(admin.ModelAdmin):
     def get_queryset(self, request):
         return super().get_queryset(request).annotate(services_count=Count('service'))
 
-@admin.register(Staff)
+@admin.register(models.Staff)
 class StaffAdmin(admin.ModelAdmin):
     list_display = ['id', 'name', 'age']
     list_editable = ['name', 'age']
     search_fields = ['name']
 
 class AppointmentItemInline(admin.TabularInline):
-    model = AppointmentItem
+    model = models.AppointmentItem
     autocomplete_fields = ['service', 'appointment']
     extra = 1
 
 
-@admin.register(Appointment)
+@admin.register(models.Appointment)
 class AppointmentAdmin(admin.ModelAdmin):
     autocomplete_fields = ['customer', 'payment_method']
     inlines = [AppointmentItemInline]
@@ -79,6 +89,8 @@ class AppointmentAdmin(admin.ModelAdmin):
     search_fields = ['customer','placed_at','payment_method', 'date', 'staff']
     list_filter = ['placed_at', 'staff', 'date']
     
+
+    @admin.display(ordering='customer__membership')
     def membership(self, appointment):
         if appointment.customer:
             return appointment.customer.membership
@@ -86,18 +98,18 @@ class AppointmentAdmin(admin.ModelAdmin):
             return "N/A"
     
 
-@admin.register(AppointmentItem)
+@admin.register(models.AppointmentItem)
 class AppointmentItemAdmin(admin.ModelAdmin):
     autocomplete_fields = ['service', 'appointment']
     list_display = ['appointment', 'service', 'price']
 
 
-@admin.register(PaymentMethod)
+@admin.register(models.PaymentMethod)
 class PaymentMethodAdmin(admin.ModelAdmin):
     list_display = ['id', 'title']
     search_fields = ['title']
 
-@admin.register(Avability)
+@admin.register(models.Avability)
 class AvabilityAdmin(admin.ModelAdmin):
     list_display = ['id','staff', 'date']
     search_fields = ['date', 'staff']

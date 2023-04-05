@@ -3,6 +3,7 @@ from django.conf import settings
 from django.db import models
 from uuid import uuid4
 from django.core.validators import MinValueValidator
+from .validators import validate_file_size
 
 class Customer(models.Model):
     MEMBERSHIP_BRONZE = 'B'
@@ -21,6 +22,7 @@ class Customer(models.Model):
         max_length=1, choices=MEMBERSHIP_CHOICES, default=MEMBERSHIP_BRONZE)
     user = models.OneToOneField(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    image = models.ImageField(upload_to='BNstudio/images', validators=[validate_file_size])
 
     def __str__(self):
         return f'{self.user.first_name} {self.user.last_name}'
@@ -40,6 +42,8 @@ class Customer(models.Model):
         ]
         verbose_name = 'Клієнти'
         verbose_name_plural = 'Клієнти'
+
+
 
 
 class ServiceCategory(models.Model):
@@ -66,6 +70,7 @@ class Service(models.Model):
     category = models.ForeignKey(
         ServiceCategory, on_delete=models.DO_NOTHING)
     last_update = models.DateTimeField(auto_now=True)
+    make_time = models.TimeField(blank=True, null=True)
 
     def __str__(self):
         return str(self.title)

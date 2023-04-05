@@ -1,8 +1,4 @@
-from django.shortcuts import render
-from django.shortcuts import render, get_object_or_404
-from BNstudio.pagination import DefaultPagination
 from django.db.models.aggregates import Count
-from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.decorators import action, permission_classes
 from rest_framework.filters import SearchFilter, OrderingFilter
@@ -15,6 +11,7 @@ from .filters import ServiceFilter, CustomerFilter
 from .models import *
 from .serializers import *
 from .permissions import ViewCustomerHistoryPermission
+from .pagination import DefaultPagination
 
 class ServiceViewSet(ModelViewSet):
     queryset = Service.objects.all()

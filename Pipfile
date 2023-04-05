@@ -20,6 +20,8 @@ django-rest-framework-nested = "*"
 djoser = "*"
 djangorestframework-simplejwt = "*"
 django-cors-headers = "*"
+pillow = "*"
+mysqlclient = "*"
 
 [dev-packages]
 pylint = "*"
