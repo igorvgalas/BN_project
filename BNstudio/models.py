@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.conf import settings
 from django.db import models
+from django.utils.html import format_html
 from uuid import uuid4
 from django.core.validators import MinValueValidator
 from .validators import validate_file_size
@@ -26,7 +27,7 @@ class Customer(models.Model):
 
     def __str__(self):
         return f'{self.user.first_name} {self.user.last_name}'
-
+    
     @admin.display(ordering='user__first_name')
     def first_name(self):
         return self.user.first_name
@@ -41,9 +42,9 @@ class Customer(models.Model):
             ('view_history', 'Can view history')
         ]
         verbose_name = 'Клієнти'
-        verbose_name_plural = 'Клієнти'
-
-
+        verbose_name_plural = 'Клієнти' 
+    
+    
 
 
 class ServiceCategory(models.Model):
@@ -157,16 +158,17 @@ class CartItem(models.Model):
     class Meta:
         unique_together = [['cart', 'service']]    
 
-class Avability(models.Model):
-    staff = models.ForeignKey(Staff,on_delete=models.DO_NOTHING,blank=True, null=True)
+class Availability(models.Model):
     date=models.DateField(blank=True, null=True)
+    staff = models.ForeignKey(Staff,on_delete=models.DO_NOTHING,blank=True, null=True, related_name='items')
 
     def __str__(self):
-        return str(self.date)
+        return f'{self.date} {self.staff}'
 
     class Meta:
         verbose_name = 'Доступність'
         verbose_name_plural = 'Доступність'
+        unique_together = [['date', 'staff']] 
 
 
 class Review(models.Model):

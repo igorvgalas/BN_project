@@ -10,6 +10,7 @@ router.register('customers', views.CustomerViewSet)
 router.register('carts', views.CartViewSet)
 router.register('appointments', views.AppointmentViewSet, basename='appointments')
 router.register('staff', views.StaffViewSet, basename='staff')
+router.register('availability', views.AvailabilityViewSet, basename= 'availability')
 
 services_router = routers.NestedSimpleRouter(
     router, 'services', lookup='service')

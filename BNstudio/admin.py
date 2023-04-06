@@ -6,17 +6,18 @@ from . import models
 
 
 
+
     
 @admin.register(models.Customer)
 class CustomerAdmin(admin.ModelAdmin):
     autocomplete_fields = ['user']
-    list_display = ['first_name', 'last_name','phone_number', 'birth_date', 'membership', 'appointments', 'image']
+    list_display = ['first_name', 'last_name','phone_number', 'birth_date', 'membership', 'appointments', 'thumbnail']
     list_editable = ['membership']
     list_per_page = 10
     list_select_related = ['user']
     search_fields = ['user__first_name__istartswith', 'user__last_name__istartswith']
-    readonly_fields = ['thumbnail']
     
+    @admin.display(description='Photo')
     def thumbnail(self, instance):
         if instance.image.name != '':
             return format_html(f'<img src="{instance.image.url}" class="thumbnail" />')
@@ -35,6 +36,12 @@ class CustomerAdmin(admin.ModelAdmin):
     def get_queryset(self, request):
         return super().get_queryset(request).annotate(
             appointments_count=Count('appointment'))
+
+    class Media:
+        css = {
+            'all': ['BNstudio/styles.css']
+        }   
+
 
 @admin.register(models.Service)
 class ServiceAdmin(admin.ModelAdmin):
@@ -109,7 +116,8 @@ class PaymentMethodAdmin(admin.ModelAdmin):
     list_display = ['id', 'title']
     search_fields = ['title']
 
-@admin.register(models.Avability)
-class AvabilityAdmin(admin.ModelAdmin):
+@admin.register(models.Availability)
+class AvailabilityAdmin(admin.ModelAdmin):
     list_display = ['id','staff', 'date']
     search_fields = ['date', 'staff']
+    list_filter = ['date', 'staff']

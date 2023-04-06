@@ -7,7 +7,7 @@ from rest_framework.permissions import AllowAny,IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet, GenericViewSet
 from rest_framework import status
-from .filters import ServiceFilter, CustomerFilter
+from .filters import ServiceFilter, CustomerFilter, AvailabilityFilter
 from .models import *
 from .serializers import *
 from .permissions import ViewCustomerHistoryPermission
@@ -160,4 +160,12 @@ class StaffViewSet(ModelViewSet):
     queryset = Staff.objects.all()
     serializer_class = StaffSerializer
     #permission_classes = AllowAny
-    ordering_fields = ['id','name']    
+    ordering_fields = ['id','name']   
+
+class AvailabilityViewSet(ModelViewSet):
+    serializer_class = AvailabilitySerializer
+    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
+    filterset_class = AvailabilityFilter
+
+    def get_queryset(self):
+        return Availability.objects.select_related('staff').all()
