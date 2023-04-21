@@ -3,6 +3,3 @@ BN/settings.py
 token.txt
 media
 templates
-static/vendor
-static/css
-static/js
