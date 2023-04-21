@@ -36,8 +36,13 @@ class ServiceCategoryViewSet(ModelViewSet):
     queryset = ServiceCategory.objects.annotate(
         services_count = Count('service')).all()
     serializer_class = ServiceCategorySerializer
+    filter_backends = [DjangoFilterBackend, SearchFilter,OrderingFilter]
+    pagination_class = DefaultPagination
     #permission_classes =AllowAny
 
+    def get_serializer_context(self):
+        return {'request': self.request} 
+    
     def destroy(self, request, *args, **kwargs):
         if Service.objects.filter(category_id = kwargs['pk']):
             return Response({'error': 'Category cannot be deleted because it includes one or more services.'}, 
@@ -55,6 +60,7 @@ class ReviewViewSet(ModelViewSet):
 class CustomerViewSet(CreateModelMixin, RetrieveModelMixin, UpdateModelMixin, GenericViewSet):
     queryset = Customer.objects.all()
     serializer_class = CustomerSerializer
+    pagination_class = DefaultPagination
     #permission_classes = [IsAdminUser]
     filterset_class = CustomerFilter
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
@@ -161,11 +167,13 @@ class StaffViewSet(ModelViewSet):
     serializer_class = StaffSerializer
     #permission_classes = AllowAny
     ordering_fields = ['id','name']   
+    pagination_class = DefaultPagination
 
 class AvailabilityViewSet(ModelViewSet):
     serializer_class = AvailabilitySerializer
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
     filterset_class = AvailabilityFilter
+    pagination_class = DefaultPagination
 
     def get_queryset(self):
         return Availability.objects.select_related('staff').all()
