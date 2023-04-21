@@ -11,6 +11,7 @@ function App() {
                   "main"
                   "footer"`}
       gridTemplateColumns={"1200px 1fr"}
+      gridTemplateRows={"80px"}
       // maxW={1400}
       // minW={1200}
       gap="1"
@@ -20,10 +21,10 @@ function App() {
       <GridItem pl="2" bg="pink.300" area={"header"}>
         <NavBar />
       </GridItem>
-      <GridItem pl="2" bg="green.300" area={"main"}>
+      <GridItem pl="2" area={"main"}>
         Main
       </GridItem>
-      <GridItem pl="2" bg="blue.300" area={"footer"}>
+      <GridItem pl="2" area={"footer"}>
         Footer
       </GridItem>
     </Grid>
