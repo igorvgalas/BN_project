@@ -10,7 +10,7 @@ class ServiceCategorySerializer(serializers.ModelSerializer):
     
     class Meta:
         model = ServiceCategory
-        fields = ['id','title','services_count']
+        fields = ['id','title','services_count','image']
 
 
 

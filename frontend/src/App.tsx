@@ -3,7 +3,7 @@ import reactLogo from "./assets/react.svg";
 import { Grid, GridItem, Show } from "@chakra-ui/react";
 import "./App.css";
 import NavBar from "./components/NavBar";
-import CategoryCrid from "./components/CategoryGrid";
+import CategoryGrid from "./components/CategoriesGrid";
 
 function App() {
   return (
@@ -22,8 +22,8 @@ function App() {
       <GridItem pl="2" bg="pink.300" area={"header"}>
         <NavBar />
       </GridItem>
-      <GridItem pl="2" area={"main"}>
-        <CategoryCrid />
+      <GridItem  area={"main"}>
+        <CategoryGrid />
       </GridItem>
       <GridItem pl="2" area={"footer"}>
         Footer

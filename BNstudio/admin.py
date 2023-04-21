@@ -58,7 +58,7 @@ class ServiceAdmin(admin.ModelAdmin):
 
 @admin.register(models.ServiceCategory)
 class ServiceCategoryAdmin(admin.ModelAdmin):
-    list_display = ['id', 'title', 'service_count']
+    list_display = ['id', 'title', 'service_count', 'image']
     list_filter = ['title']
     search_fields = ['title']
     

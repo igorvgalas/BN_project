@@ -51,6 +51,7 @@ class ServiceCategory(models.Model):
     title = models.CharField(max_length=255, blank=True, null=True)
     featured_service = models.ForeignKey(
         'Service', on_delete=models.SET_NULL, null=True, related_name='+', blank=True)
+    image = models.ImageField(upload_to='BNstudio/images', validators=[validate_file_size])
     
     def __str__(self):
         return str(self.title)
