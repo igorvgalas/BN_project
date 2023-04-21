@@ -2,3 +2,7 @@ db.sqlite3
 BN/settings.py
 token.txt
 media
+static/css
+static/js
+static/vendor
+templates
