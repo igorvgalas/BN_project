@@ -11,7 +11,7 @@ const CategoriesCard = ({category}: Props) => (
       <Image src={category.image}/>
       <CardBody>
         <Heading>{category.title}</Heading>
-        <Text>
+        <Text color = "gray.300">
           description
         </Text>
       <CardFooter>
