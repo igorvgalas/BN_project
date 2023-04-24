@@ -3,7 +3,7 @@ import { Card, CardBody, Skeleton, SkeletonText, Text,CardFooter, Button } from 
 
 const CategoryCardSkeleton = () => {
   return (
-    <Card align='center' borderRadius={10} overflow='hidden'>
+    <Card>
         <Skeleton height={"200px"}/>
         <CardBody>
             <SkeletonText />

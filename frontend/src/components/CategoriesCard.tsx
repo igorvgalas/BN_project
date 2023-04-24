@@ -7,7 +7,7 @@ interface Props {
 
 const CategoriesCard = ({category}: Props) => (
   
-  <Card align='center' borderRadius={10} overflow='hidden'>
+  <Card align="center">
       <Image src={category.image}/>
       <CardBody>
         <Heading>{category.title}</Heading>
