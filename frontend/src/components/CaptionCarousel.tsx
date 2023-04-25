@@ -124,3 +124,4 @@ const CaptionCarousel = () => {
 };
 
 export default CaptionCarousel;
+

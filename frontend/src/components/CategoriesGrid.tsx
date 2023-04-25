@@ -1,11 +1,11 @@
 import { SimpleGrid, Text } from "@chakra-ui/react";
-import UseCategories from "../hooks/useGategories";
+import useCategories from "../hooks/useGategories";
 import CategoriesCard from "./CategoriesCard";
 import CategoryCardSkeleton from "./CategoryCardSkeleton";
 import CategoryCardContainer from "./CategoryCardContainer";
 
 const CategoryGrid = () => {
-  const { categories, error, isLoading } = UseCategories();
+  const { data, error, isLoading } = useCategories();
   const skeletons = [1, 2, 3, 4];
   return (
     <>
@@ -21,8 +21,8 @@ const CategoryGrid = () => {
             <CategoryCardSkeleton key={skeleton} />
           </CategoryCardContainer>
           ))}
-        {categories &&
-          categories?.map((category) => (
+        {data &&
+          data?.map((category) => (
             <CategoryCardContainer>
               <CategoriesCard key={category.id} category={category} />
             </CategoryCardContainer>
