@@ -11,22 +11,22 @@ const CategoryGrid = () => {
     <>
       {error && <Text>{error}</Text>}
       <SimpleGrid
-        templateColumns="repeat(auto-fill, minmax(250px, 1fr))"
-        spacing={10}
-        padding="10px"
+        id='serviceType'
+        templateColumns="repeat(auto-fill, minmax(280px, 1fr))"
+        spacing={6}
+        padding={4}
       >
         {isLoading &&
           skeletons.map((skeleton) => (
-          <CategoryCardContainer>
-            <CategoryCardSkeleton key={skeleton} />
-          </CategoryCardContainer>
-          ))}
-        {data &&
-          data?.map((category) => (
-            <CategoryCardContainer>
-              <CategoriesCard key={category.id} category={category} />
+            <CategoryCardContainer key={skeleton}>
+              <CategoryCardSkeleton />
             </CategoryCardContainer>
           ))}
+        {data?.map((category) => (
+          <CategoryCardContainer key={category.id}>
+            <CategoriesCard category={category} />
+          </CategoryCardContainer>
+        ))}
       </SimpleGrid>
     </>
   );

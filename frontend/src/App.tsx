@@ -1,36 +1,46 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import { Grid, GridItem, Show } from "@chakra-ui/react";
+import { Grid, GridItem } from "@chakra-ui/react";
 import "./App.css";
-import NavBar from "./components/NavBar";
+import Navbar from "./components/NavBar";
 import CategoryGrid from "./components/CategoriesGrid";
-import CaptionCarousel from "./components/CaptionCarousel";
+import LargeWithNewsletter from "./components/Footer";
+import HeroAboutUs from "./components/HeroAboutUs";
+import FeaturesClientExp from "./components/FeaturesClientExp";
+import Pricing from "./components/Pricing";
+import Team from "./components/Team";
+import Articles from "./components/Articles";
+import Contacts from "./components/Contacts";
+
 
 function App() {
   return (
-    <Grid
-      templateAreas={`"header"
+    <>
+      <Grid
+        templateAreas={`"header"
                   "main"
                   "footer"`}
-      gridTemplateColumns={"1200px 1fr"}
-      gridTemplateRows={"80px"}
-      // maxW={1400}
-      // minW={1200}
-      gap="1"
-      color="blackAlpha.700"
-      fontWeight="bold"
-    >
-      <GridItem pl="2" bg="pink.300" area={"header"} borderRadius={10}>
-        <NavBar />
-      </GridItem>
-      <GridItem  area={"main"}>
-        <CaptionCarousel />
-        <CategoryGrid />
-      </GridItem>
-      <GridItem pl="2" area={"footer"}>
-        Footer
-      </GridItem>
-    </Grid>
+        gridTemplateColumns={"100% 1fr"}
+        gridTemplateRows={"80px"}
+        gap="1"
+        color="blackAlpha.700"
+        fontWeight="bold"
+      >
+        <GridItem area={"header"}>
+          <Navbar />
+        </GridItem>
+        <GridItem area={"main"}>
+          <HeroAboutUs />
+          <FeaturesClientExp/>
+          <CategoryGrid />
+          <Pricing />
+          <Team/>
+          <Articles/>
+          <Contacts/>
+        </GridItem>
+        <GridItem pl="2" area={"footer"}>
+          <LargeWithNewsletter />
+        </GridItem>
+      </Grid>
+    </>
   );
 }
 
