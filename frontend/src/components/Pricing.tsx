@@ -13,7 +13,23 @@ import {
   Box,
 } from "@chakra-ui/react";
 
+
+
 export default function Pricing() {
+  const pink100BoxStyle = {
+    p: 3,
+    overflow :"hidden",
+    borderRadius:10,
+    bg:useColorModeValue("pink.100", "pink.900"),
+    color:useColorModeValue("gray.600", "gray.200")};
+  
+    const pink50BoxStyle = {
+      p: 3,
+      overflow :"hidden",
+      borderRadius:10,
+      bg:useColorModeValue("pink.50", "pink.900"),
+      color:useColorModeValue("gray.600", "gray.200")};  
+
   return (
     <Container maxW={"8xl"} py={12} id="pricing">
       <Box>
@@ -22,13 +38,7 @@ export default function Pricing() {
         </Heading>
       </Box>
       <SimpleGrid columns={{ base: 1, md: 2 }} spacing={10}>
-        <Box
-          p={3}
-          overflow={"hidden"}
-          borderRadius={10}
-          bg={useColorModeValue("pink.100", "pink.900")}
-          color={useColorModeValue("gray.600", "gray.200")}
-        >
+        <Box sx={pink100BoxStyle}>
           <TableContainer>
             <Table size={{ base: "md", md: "lg", lg: "lg" }}>
               <Thead>
@@ -56,13 +66,7 @@ export default function Pricing() {
             </Table>
           </TableContainer>
         </Box>
-        <Box
-          p={3}
-          overflow={"hidden"}
-          borderRadius={10}
-          bg={useColorModeValue("pink.50", "pink.900")}
-          color={useColorModeValue("gray.600", "gray.200")}
-        >
+        <Box sx={pink50BoxStyle} >
           <TableContainer>
             <Table size={{ base: "md", md: "lg", lg: "lg" }}>
               <Thead>
@@ -90,13 +94,7 @@ export default function Pricing() {
             </Table>
           </TableContainer>
         </Box>
-        <Box
-          p={3}
-          overflow={"hidden"}
-          borderRadius={10}
-          bg={useColorModeValue("pink.50", "pink.900")}
-          color={useColorModeValue("gray.600", "gray.200")}
-        >
+        <Box sx={pink50BoxStyle} >
           <TableContainer>
             <Table size={{ base: "md", md: "lg", lg: "lg" }}>
               <Thead>
@@ -136,13 +134,7 @@ export default function Pricing() {
             </Table>
           </TableContainer>
         </Box>
-        <Box
-          p={3}
-          overflow={"hidden"}
-          borderRadius={10}
-          bg={useColorModeValue("pink.100", "pink.900")}
-          color={useColorModeValue("gray.600", "gray.200")}
-        >
+        <Box sx={pink100BoxStyle} >
           <TableContainer>
             <Table size={{ base: "md", md: "lg", lg: "lg" }}>
               <Thead>
