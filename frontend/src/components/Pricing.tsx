@@ -16,15 +16,17 @@ import {
 export default function Pricing() {
   return (
     <Container maxW={"8xl"} py={12} id="pricing">
-      <Heading textAlign={"center"} mb={10}>
-        Прайс
-      </Heading>
+      <Box>
+        <Heading textAlign={"center"} mb={10}>
+          Прайс
+        </Heading>
+      </Box>
       <SimpleGrid columns={{ base: 1, md: 2 }} spacing={10}>
         <Box
           p={3}
           overflow={"hidden"}
           borderRadius={10}
-          bg={useColorModeValue("pink.50", "pink.900")}
+          bg={useColorModeValue("pink.100", "pink.900")}
           color={useColorModeValue("gray.600", "gray.200")}
         >
           <TableContainer>
@@ -138,7 +140,7 @@ export default function Pricing() {
           p={3}
           overflow={"hidden"}
           borderRadius={10}
-          bg={useColorModeValue("pink.50", "pink.900")}
+          bg={useColorModeValue("pink.100", "pink.900")}
           color={useColorModeValue("gray.600", "gray.200")}
         >
           <TableContainer>

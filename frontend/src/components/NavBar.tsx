@@ -147,7 +147,7 @@ const DesktopNav = () => {
                 rounded={"xl"}
                 minW={"sm"}
               >
-                <Stack>
+                <Stack bg={"gray.50"}>
                   {navItem.children.map((child) => (
                     <DesktopSubNav key={child.label} {...child} />
                   ))}

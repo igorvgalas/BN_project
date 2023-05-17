@@ -8,7 +8,6 @@ import {
   Image,
   Text,
 } from "@chakra-ui/react";
-import getCroppedImageUrl from "../services/image_url";
 
 interface Props {
   category: Category;

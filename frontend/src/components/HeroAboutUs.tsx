@@ -10,7 +10,6 @@ import {
   Button,
   Image,
   Icon,
-  IconButton,
   createIcon,
   IconProps,
   useColorModeValue,
@@ -18,7 +17,7 @@ import {
 
 export default function HeroAboutUs() {
   return (
-    <Container maxW={"8xl"} id='about_us'>
+    <Container overflow={'hidden'} maxW={"8xl"} id='about_us'>
       <Stack
         align={"center"}
         spacing={{ base: 8, md: 10 }}
@@ -41,7 +40,7 @@ export default function HeroAboutUs() {
                 position: "absolute",
                 bottom: 1,
                 left: 0,
-                bg: "red.400",
+                bg: "pink.200",
                 zIndex: -1,
               }}
             >
@@ -65,10 +64,10 @@ export default function HeroAboutUs() {
               size={"lg"}
               fontWeight={"normal"}
               px={6}
-              colorScheme={"red"}
-              bg={"red.400"}
+              colorScheme={"pink"}
+              bg={"pink.200"}
               rightIcon={<ArrowForwardIcon h={18} w={18} color={"gray.300"} />}
-              _hover={{ bg: "pink.300" }}
+              _hover={{ bg: "pink.400" }}
             >
               Запис онлайн
             </Button>

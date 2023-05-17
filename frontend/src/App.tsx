@@ -1,5 +1,4 @@
 import { Grid, GridItem } from "@chakra-ui/react";
-import "./App.css";
 import Navbar from "./components/NavBar";
 import CategoryGrid from "./components/CategoriesGrid";
 import LargeWithNewsletter from "./components/Footer";
@@ -36,7 +35,7 @@ function App() {
           <Articles/>
           <Contacts/>
         </GridItem>
-        <GridItem pl="2" area={"footer"}>
+        <GridItem area={"footer"}>
           <LargeWithNewsletter />
         </GridItem>
       </Grid>
