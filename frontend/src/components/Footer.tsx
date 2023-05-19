@@ -16,7 +16,7 @@ import { ReactNode } from "react";
 import { FaInstagram, FaTwitter, FaYoutube } from "react-icons/fa";
 import { BiMailSend } from "react-icons/bi";
 import logoLight from "../assets/logo.webp";
-import logoDark from "../assets/react.svg";
+import logoDark from "../assets/logoLight.webp";
 import { useColorMode } from "@chakra-ui/react";
 
 const SocialButton = ({
@@ -59,9 +59,9 @@ const ListHeader = ({ children }: { children: ReactNode }) => {
   );
 };
 
-export default function LargeWithNewsletter() {
+const LargeWithNewsletter = () => {
   const { colorMode } = useColorMode();
-  const themeLogo = colorMode === "light" ? logoLight : logoLight;
+  const themeLogo = colorMode === "light" ? logoLight : logoDark;
   return (
     <Box
       overflow={"hidden"}
@@ -95,12 +95,12 @@ export default function LargeWithNewsletter() {
           </Stack>
           <Stack align={"flex-start"}>
             <ListHeader>Beauty Nails</ListHeader>
-            <Link href={"#"}>Про нас</Link>
-            <Link href={"#"}>Контакти</Link>
+            <Link href={"#about_us"}>Про нас</Link>
+            <Link href={"#contacts"}>Контакти</Link>
           </Stack>
           <Stack align={"flex-start"}>
             <ListHeader>Корисні посилання</ListHeader>
-            <Link href={"#"}>Прайс</Link>
+            <Link href={"#pricing"}>Прайс</Link>
             <Link href={"#"}>Запис онлайн</Link>
           </Stack>
           <Stack align={"flex-start"}>
@@ -130,3 +130,5 @@ export default function LargeWithNewsletter() {
     </Box>
   );
 }
+
+export default LargeWithNewsletter

@@ -9,7 +9,7 @@ import {
   Heading,
 } from "@chakra-ui/react";
 
-function Articles() {
+const Articles = () => {
   return (
     <Container maxW={"6xl"} py={12}>
       <Heading textAlign="center" mb={10}>

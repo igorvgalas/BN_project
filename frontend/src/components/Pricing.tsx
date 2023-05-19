@@ -15,7 +15,7 @@ import {
 
 
 
-export default function Pricing() {
+const  Pricing = () => {
   const pink100BoxStyle = {
     p: 3,
     overflow :"hidden",
@@ -178,3 +178,6 @@ export default function Pricing() {
     </Container>
   );
 }
+
+
+export default Pricing

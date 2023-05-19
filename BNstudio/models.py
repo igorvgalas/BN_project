@@ -160,7 +160,7 @@ class CartItem(models.Model):
         unique_together = [['cart', 'service']]    
 
 class Availability(models.Model):
-    date=models.DateField(blank=True, null=True)
+    date=models.DateField()
     staff = models.ForeignKey(Staff,on_delete=models.DO_NOTHING,blank=True, null=True, related_name='items')
 
     def __str__(self):

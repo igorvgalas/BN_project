@@ -11,7 +11,7 @@ import team2 from "../assets/team/team-2.jpg";
 import team3 from "../assets/team/team-3.jpg";
 import team4 from "../assets/team/team-4.jpg";
 
-export default function Team() {
+ const Team = () => {
   const teamBoxStyles = {
     rounded : "2xl", 
     boxShadow : "2xl",
@@ -47,3 +47,5 @@ export default function Team() {
     </Container>
   );
 };
+
+export default Team

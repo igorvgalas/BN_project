@@ -1,5 +1,5 @@
 from django_filters.rest_framework import FilterSet, DateFilter, DateFromToRangeFilter
-from .models import Service, Customer, Availability
+from .models import Service, Customer, Availability, Appointment
 
 class ServiceFilter(FilterSet):
   class Meta:
@@ -23,3 +23,11 @@ class AvailabilityFilter(FilterSet):
     fields = {
       'staff': ['exact'],
     }
+
+class AppointmentFilter(FilterSet):
+  class Meta:
+    model = Appointment
+    fields = {
+      'staff': ['exact'],
+      'date': ['exact']
+    }    

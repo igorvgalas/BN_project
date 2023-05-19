@@ -15,7 +15,13 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 
-export default function HeroAboutUs() {
+interface HeroAboutUsProps {
+  onOpenAppointment: () => void
+}
+
+const HeroAboutUs = (props: HeroAboutUsProps) => {
+  const {onOpenAppointment} = props
+  
   return (
     <Container overflow={'hidden'} maxW={"8xl"} id='about_us'>
       <Stack
@@ -68,6 +74,7 @@ export default function HeroAboutUs() {
               bg={"pink.200"}
               rightIcon={<ArrowForwardIcon h={18} w={18} color={"gray.300"} />}
               _hover={{ bg: "pink.400" }}
+              onClick={onOpenAppointment}
             >
               Запис онлайн
             </Button>
@@ -136,3 +143,5 @@ export const Blob = (props: IconProps) => {
     </Icon>
   );
 };
+
+export default HeroAboutUs

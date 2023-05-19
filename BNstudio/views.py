@@ -7,7 +7,7 @@ from rest_framework.permissions import AllowAny,IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet, GenericViewSet
 from rest_framework import status
-from .filters import ServiceFilter, CustomerFilter, AvailabilityFilter
+from .filters import ServiceFilter, CustomerFilter, AvailabilityFilter, AppointmentFilter
 from .models import *
 from .serializers import *
 from .permissions import ViewCustomerHistoryPermission
@@ -18,7 +18,7 @@ class ServiceViewSet(ModelViewSet):
     serializer_class = ServiceSerializer
     filter_backends = [DjangoFilterBackend, SearchFilter,OrderingFilter]
     filterset_class = ServiceFilter
-    pagination_class = DefaultPagination
+    #pagination_class = DefaultPagination
     #permission_classes = AllowAny
     search_fields = ['name', 'category']
     orderind_fields =['price', ]  
@@ -37,7 +37,7 @@ class ServiceCategoryViewSet(ModelViewSet):
         services_count = Count('service')).all()
     serializer_class = ServiceCategorySerializer
     filter_backends = [DjangoFilterBackend, SearchFilter,OrderingFilter]
-    pagination_class = DefaultPagination
+    #pagination_class = DefaultPagination
     #permission_classes =AllowAny
 
     def get_serializer_context(self):
@@ -60,7 +60,7 @@ class ReviewViewSet(ModelViewSet):
 class CustomerViewSet(CreateModelMixin, RetrieveModelMixin, UpdateModelMixin, GenericViewSet):
     queryset = Customer.objects.all()
     serializer_class = CustomerSerializer
-    pagination_class = DefaultPagination
+    #pagination_class = DefaultPagination
     #permission_classes = [IsAdminUser]
     filterset_class = CustomerFilter
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
@@ -112,6 +112,8 @@ class CartItemViewSet(ModelViewSet):
 
 
 class AppointmentViewSet(ModelViewSet):
+    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
+    filterset_class = AppointmentFilter
     http_method_names = ['get', 'post', 'patch', 'delete', 'head', 'options']
 
     def get_permissions(self):
@@ -165,15 +167,16 @@ class AppointmentItemViewSet(ModelViewSet):
 class StaffViewSet(ModelViewSet):
     queryset = Staff.objects.all()
     serializer_class = StaffSerializer
+    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
     #permission_classes = AllowAny
     ordering_fields = ['id','name']   
-    pagination_class = DefaultPagination
+    #pagination_class = DefaultPagination
 
 class AvailabilityViewSet(ModelViewSet):
     serializer_class = AvailabilitySerializer
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
     filterset_class = AvailabilityFilter
-    pagination_class = DefaultPagination
+    #pagination_class = DefaultPagination
 
     def get_queryset(self):
         return Availability.objects.select_related('staff').all()

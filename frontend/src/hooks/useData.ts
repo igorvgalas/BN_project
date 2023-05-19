@@ -4,9 +4,20 @@ import { AxiosRequestConfig, CanceledError } from "axios";
 
 
   
-  interface FetchResponse<T> {
-    results: T[]
-  }
+  // interface FetchResponse<T> {
+  //   results: T[]
+  // }
+
+interface encodeQuery {
+    [key: string]: number|string;
+ }
+
+export function encodeQueryData(data: encodeQuery) {
+  const ret = [];
+  for (let d in data)
+    ret.push(encodeURIComponent(d) + '=' + encodeURIComponent(data[d]));
+  return ret.join('&');
+}  
 
 const useData = <T> (endpoint:string, requestConfig?:AxiosRequestConfig, deps?:any) => {
     const [data, setData] = useState<T[]>([]);
@@ -18,9 +29,9 @@ const useData = <T> (endpoint:string, requestConfig?:AxiosRequestConfig, deps?:a
 
     setLoading(true);
       apiClient
-        .get<FetchResponse<T>>(endpoint, {signal: controller.signal})
+        .get<T[]>(endpoint, {signal: controller.signal})
         .then((res) => {
-          setData(res.data.results);
+          setData(res.data);
           setLoading(false)
         })
         .catch((err) => {

@@ -3,7 +3,6 @@ import {
   Flex,
   Text,
   IconButton,
-  Button,
   Stack,
   Collapse,
   Icon,
@@ -12,8 +11,8 @@ import {
   PopoverTrigger,
   PopoverContent,
   useColorModeValue,
-  useBreakpointValue,
   useDisclosure,
+  Button,
 } from "@chakra-ui/react";
 import { Image } from "@chakra-ui/react";
 import {
@@ -21,20 +20,25 @@ import {
   CloseIcon,
   ChevronDownIcon,
   ChevronRightIcon,
+  ArrowForwardIcon,
 } from "@chakra-ui/icons";
 import logoLight from "../assets/logo.webp";
-import logoDark from "../assets/react.svg";
+import logoDark from "../assets/logoLight.webp";
 import ColorModeSwitch from "./ColorModeSwitch";
 import { useColorMode } from "@chakra-ui/react";
 
-export default function Navbar() {
+interface NavBarProps {
+  onOpenAppointment: () => void
+}
+
+const Navbar = (props:NavBarProps) => {
   const { isOpen, onToggle } = useDisclosure();
   const { colorMode } = useColorMode();
 
-  const themeLogo = colorMode === "light" ? logoLight : logoLight;
-
+  const themeLogo = colorMode === "light" ? logoLight : logoDark;
+  const {onOpenAppointment} = props
   return (
-    <Box>
+    <Box position="sticky">
       <Flex
         bg={useColorModeValue("white", "gray.800")}
         color={useColorModeValue("gray.600", "white")}
@@ -70,10 +74,7 @@ export default function Navbar() {
             <DesktopNav />
           </Flex>
         </Flex>
-
-        <ColorModeSwitch />
-
-        {/* <Stack
+        <Stack
           flex={{ base: 1, md: 0 }}
           justify={"flex-end"}
           direction={"row"}
@@ -81,28 +82,21 @@ export default function Navbar() {
         >
           <Button
             as={"a"}
-            fontSize={"sm"}
-            fontWeight={400}
-            variant={"link"}
-            href={"#"}
-          >
-            Sign In
-          </Button>
-          <Button
-            as={"a"}
             display={{ base: "none", md: "inline-flex" }}
-            fontSize={"sm"}
-            fontWeight={600}
-            color={"white"}
-            bg={"pink.400"}
-            href={"#"}
-            _hover={{
-              bg: "pink.300",
-            }}
+            rounded={"full"}
+            size={"sm"}
+            fontWeight={"normal"}
+            px={6}
+            colorScheme={"pink"}
+            bg={"pink.200"}
+            rightIcon={<ArrowForwardIcon h={18} w={18} color={"gray.300"} />}
+            _hover={{ bg: "pink.400" }}
+            onClick={onOpenAppointment}
           >
-            Sign Up
+            Запис онлайн
           </Button>
-        </Stack> */}
+        </Stack>
+        <ColorModeSwitch />
       </Flex>
 
       <Collapse in={isOpen} animateOpacity>
@@ -281,16 +275,18 @@ const NAV_ITEMS: Array<NavItem> = [
     label: "Види послуг",
     href: "#serviceType",
   },
-  {
-    label: "Запис онлайн",
-    href: "#",
-  },
+  // {
+  //   label: "Запис онлайн",
+  //   href: "#",
+  // },
   {
     label: "Контакти",
-    href: "#",
+    href: "#contacts",
   },
   {
     label: "Про нас",
     href: "#about_us",
   },
 ];
+
+export default Navbar

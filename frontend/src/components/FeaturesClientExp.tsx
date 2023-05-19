@@ -39,7 +39,7 @@ const Feature = ({ text, icon, iconBg }: FeatureProps) => {
   );
 };
 
-export default function FeaturesClientExp() {
+const FeaturesClientExp = () => {
   return (
     <Container maxW={"8xl"} py={12}>
       <SimpleGrid columns={{ base: 1, md: 2 }} spacing={10}>
@@ -111,3 +111,5 @@ export default function FeaturesClientExp() {
     </Container>
   );
 }
+
+export default FeaturesClientExp

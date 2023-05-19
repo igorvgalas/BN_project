@@ -27,11 +27,11 @@ const Contacts = () => {
   };
 
   return (
-    <Grid py={10}>
+    <Grid id="contacts" py={10}>
       <Box mb={10}>
         <Heading textAlign={"center"}>Контакти</Heading>
         <Text textAlign={"center"} margin={0}>
-          Торгово-офісний центр Інтерсіті{" "}
+          Торгово-офісний центр Інтерсіті
         </Text>
       </Box>
       <SimpleGrid
@@ -40,7 +40,6 @@ const Contacts = () => {
         padding={10}
         alignItems="top"
         justifyContent="center"
-        textAlign="center"
       >
         <Box>
           <Card>
