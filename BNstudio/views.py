@@ -181,3 +181,8 @@ class AvailabilityViewSet(ModelViewSet):
 
     def get_queryset(self):
         return Availability.objects.select_related('staff').all()
+
+class OnlineAppointmentViewSet(ModelViewSet):
+    serializer_class = OnlineAppointmentSerializer
+    queryset = OnlineAppointment.objects.all()
+    

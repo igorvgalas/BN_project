@@ -82,6 +82,13 @@ class StaffAdmin(admin.ModelAdmin):
     list_editable = ['name', 'age']
     search_fields = ['name']
 
+@admin.register(models.OnlineAppointment)
+class OnlineAppointmentAdmin(admin.ModelAdmin):
+    list_display = ['id','staff','date', 'time_slot','service','customer','phone_number', 'payment_method','payment', 'placed_at']
+    list_editeble = [ 'payment_method','payment']
+    list_filter = ['placed_at', 'staff', 'date']
+    search_fields = ['staff','date']
+
 class AppointmentItemInline(admin.TabularInline):
     model = models.AppointmentItem
     autocomplete_fields = ['service', 'appointment']
@@ -93,8 +100,8 @@ class AppointmentAdmin(admin.ModelAdmin):
     autocomplete_fields = ['customer', 'payment_method']
     inlines = [AppointmentItemInline]
     list_display = ['id','customer','placed_at','payment', 'payment_method', 'total_price', 'membership','staff','date', 'time_slot']
-    search_fields = ['customer','placed_at','payment_method', 'date', 'staff']
     list_filter = ['placed_at', 'staff', 'date']
+    search_fields = ['customer','placed_at','payment_method', 'date', 'staff']
     
 
     @admin.display(ordering='customer__membership')
@@ -119,5 +126,5 @@ class PaymentMethodAdmin(admin.ModelAdmin):
 @admin.register(models.Availability)
 class AvailabilityAdmin(admin.ModelAdmin):
     list_display = ['id','staff', 'date']
-    search_fields = ['date', 'staff']
     list_filter = ['date', 'staff']
+    search_fields = ['date', 'staff']

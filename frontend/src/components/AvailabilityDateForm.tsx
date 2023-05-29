@@ -5,9 +5,10 @@ import { Box, Flex, Heading, Select, Stack, Text, useColorModeValue, Button } fr
 interface AvailabilityDateFormInterface {
   formik: any
   handleNextStep: () => void
+  handlePreviousStep: () => void
 }
 
-const AvailabilityDateForm = ({ formik, handleNextStep}: AvailabilityDateFormInterface) => {
+const AvailabilityDateForm = ({ formik, handleNextStep, handlePreviousStep}: AvailabilityDateFormInterface) => {
   const {data, error} = useStaffAvailability(formik.values.staffId);
 
   const handleNext = useCallback(() => {
@@ -17,6 +18,12 @@ const AvailabilityDateForm = ({ formik, handleNextStep}: AvailabilityDateFormInt
       }
     });
   }, [formik]);
+
+  const handleBack = useCallback(() => {
+    handlePreviousStep(); 
+  }, [handlePreviousStep]);
+
+
 
   return (
     <Flex
@@ -55,12 +62,18 @@ const AvailabilityDateForm = ({ formik, handleNextStep}: AvailabilityDateFormInt
             </Select>
           </Stack>
         </Box>
-        <Button onClick={handleNext} colorScheme="blue">
-        Далі
-      </Button>
+        <Flex justify="space-between">
+          <Button onClick={handleBack} colorScheme="blue">
+            Назад
+          </Button>
+          <Button onClick={handleNext} colorScheme="blue">
+            Далі
+          </Button>
+        </Flex>
       </Stack>
     </Flex>
     )
 }
 
 export default AvailabilityDateForm
+

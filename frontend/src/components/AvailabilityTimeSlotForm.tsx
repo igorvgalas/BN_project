@@ -14,10 +14,11 @@ import {
 interface AvailabilityTimeSlotInterface {
   formik: any
   handleNextStep:() => void
+  handlePreviousStep:() => void
 }
 
 
-const AvailabilityTimeSlotForm = ({formik, handleNextStep}: AvailabilityTimeSlotInterface) => {
+const AvailabilityTimeSlotForm = ({formik, handleNextStep,handlePreviousStep}: AvailabilityTimeSlotInterface) => {
   
   const handleNext = useCallback(() => {
     formik.validateForm().then((e: any) => {
@@ -26,6 +27,10 @@ const AvailabilityTimeSlotForm = ({formik, handleNextStep}: AvailabilityTimeSlot
       }
     });
   }, [formik]);
+
+  const handleBack = useCallback(() => {
+    handlePreviousStep(); 
+  }, [handlePreviousStep]);
 
   const allTimeSlots = [
     "10:00:00",
@@ -84,9 +89,14 @@ const AvailabilityTimeSlotForm = ({formik, handleNextStep}: AvailabilityTimeSlot
             </Select>
           </Stack>
         </Box>
-        <Button onClick={handleNext} colorScheme="blue">
-        Далі
-      </Button>
+        <Flex justify="space-between">
+          <Button onClick={handleBack} colorScheme="blue">
+            Назад
+          </Button>
+          <Button onClick={handleNext} colorScheme="blue">
+            Далі
+          </Button>
+        </Flex> 
       </Stack>
     </Flex>
   );

@@ -21,6 +21,13 @@ const AppointmentFormDrawer = ({
   onCloseAppointment,
 }: AppintmentFormDrawlerProps) => {
   
+  const handleFormSubmit = () => {
+    const submitButton = document.getElementById("OrderFormSubmitButton");
+    if (submitButton) {
+      submitButton.click();
+    }
+    onCloseAppointment();
+  };
 
   return (
     <>
@@ -41,12 +48,14 @@ const AppointmentFormDrawer = ({
             <Button variant="outline" mr={3} onClick={onCloseAppointment}>
               Відмінити
             </Button>
-            <Button colorScheme="blue">Підтвердити</Button>
+            <Button colorScheme="blue" onClick = {handleFormSubmit}>
+              Підтвердити
+            </Button>
           </DrawerFooter>
         </DrawerContent>
       </Drawer>
     </>
   );
-}
+};
 
-export default AppointmentFormDrawer
+export default AppointmentFormDrawer;

@@ -18,9 +18,10 @@ import { useCallback } from "react";
 interface AppointmentContactFormInterface {
   formik: any;
   handleNextStep: () => void;
+  handlePreviousStep: () =>void
 }
 
-export default function AppointmentContactForm({formik, handleNextStep}:AppointmentContactFormInterface) {
+export default function AppointmentContactForm({formik, handleNextStep, handlePreviousStep}:AppointmentContactFormInterface) {
   
   const handleNext = useCallback(() => {
     formik.validateForm().then((e:any) => {
@@ -29,6 +30,10 @@ export default function AppointmentContactForm({formik, handleNextStep}:Appointm
       }
     });
   }, [formik]);
+
+  const handleBack = useCallback(() => {
+    handlePreviousStep(); 
+  }, [handlePreviousStep]);
   
   return (
     <Flex
@@ -81,9 +86,14 @@ export default function AppointmentContactForm({formik, handleNextStep}:Appointm
             </FormControl>
           </Stack>
         </Box>
-        <Button onClick={handleNext} colorScheme="blue">
-        Далі
-      </Button>
+        <Flex justify="space-between">
+          <Button onClick={handleBack} colorScheme="blue">
+            Назад
+          </Button>
+          <Button onClick={handleNext} colorScheme="blue">
+            Далі
+          </Button>
+        </Flex>  
       </Stack>
     </Flex>
   );

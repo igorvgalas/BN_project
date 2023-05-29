@@ -1,14 +1,5 @@
 import React, { useEffect, useCallback } from "react";
 import { useFormik } from "formik";
-import {
-  Box,
-  Heading,
-  Table,
-  TableContainer,
-  Tbody,
-  Td,
-  Tr,
-} from "@chakra-ui/react";
 import AvailabilityDateForm from "./AvailabilityDateForm";
 import AvailabilityTimeSlotForm from "./AvailabilityTimeSlotForm";
 import ServicesSelectForm from "./ServicesSelectForm";
@@ -20,8 +11,11 @@ import * as Yup from "yup";
 import StaffSelectForm from "./StaffSelectForm";
 import useStaff from "../hooks/useStaff";
 import useServices from "../hooks/useServices";
+import AppointmentSummary from "./AppointmentSummary";
+import { Button } from "@chakra-ui/react";
 
-interface serviceOrderInterface {
+
+export interface serviceOrderInterface {
   staffId?: number;
   appointmentDate?: string;
   appointmentTime?: string;
@@ -63,7 +57,11 @@ const OrderForm = () => {
   const formik = useFormik({
     validationSchema: schema,
     initialValues: initialValues,
-    onSubmit: (values, actions) => {},
+    onSubmit: (values, actions) => {
+      apiClient.post("/onlineappointment", values).then(() => {
+        setValue({});
+      });
+    }
   });
 
   const handleNextStep = useCallback(() => {
@@ -104,14 +102,21 @@ const OrderForm = () => {
         name: formik.values.name,
         phoneNumber: formik.values.phoneNumber,
       });
-
-      apiClient.post("/", storedValue).then(() => {
-        setValue({});
-      });
     }
+      if (currentStep === 6) {
+        apiClient
+          .post("/your-endpoint", storedValue)
+          .then(() => {})
+          .catch((error) => {
+          });
+      }
+    
+      helpers.setStep(currentStep + 1);
+    }, [currentStep, formik, helpers, setValue, storedValue]);
 
-    helpers.setStep(currentStep + 1);
-  }, [formik]);
+  const handlePreviousStep = useCallback(() => {
+    helpers.setStep(currentStep - 1);
+  }, [currentStep, helpers]);
 
   const _renderStepContent = (step: number) => {
     switch (step) {
@@ -124,6 +129,7 @@ const OrderForm = () => {
           <AvailabilityDateForm
             formik={formik}
             handleNextStep={handleNextStep}
+            handlePreviousStep={handlePreviousStep}
           />
         );
       case 3:
@@ -131,66 +137,42 @@ const OrderForm = () => {
           <AvailabilityTimeSlotForm
             formik={formik}
             handleNextStep={handleNextStep}
+            handlePreviousStep={handlePreviousStep}
           />
         );
       case 4:
         return (
-          <ServicesSelectForm formik={formik} handleNextStep={handleNextStep} />
+          <ServicesSelectForm 
+          formik={formik} 
+          handleNextStep={handleNextStep}
+          handlePreviousStep={handlePreviousStep} />
         );
       case 5:
         return (
           <AppointmentContactForm
             formik={formik}
             handleNextStep={handleNextStep}
+            handlePreviousStep={handlePreviousStep}
+
           />
         );
       case 6:
         return (
-          <>
-            <Heading>Ваш запис</Heading>
-            <Box>
-              <TableContainer>
-                <Table size={{ base: "md", md: "lg", lg: "lg" }}>
-                  <Tbody>
-                    <Tr>
-                      <Td>Майстер</Td>
-                      <Td>
-                        {data && data?.find((staff) => staff.id === storedValue.staffId)?.name}
-                      </Td>
-                    </Tr>
-                    <Tr>
-                      <Td>Дата</Td>
-                      <Td>{formik.values.appointmentDate}</Td>
-                    </Tr>
-                    <Tr>
-                      <Td>Час</Td>
-                      <Td>{formik.values.appointmentTime}</Td>
-                    </Tr>
-                    <Tr>
-                      <Td>Послуга</Td>
-                      <Td>
-                        {serviceData && serviceData
-                          ?.filter((service) => service.id === storedValue.serviceId)
-                          .map((service) => (
-                            <span key={service.id}>{service.title}</span>
-                          ))}
-                      </Td>
-                    </Tr>
-                    <Tr>
-                      <Td>Особисті дані</Td>
-                      <Td>
-                        {formik.values.name} 0{formik.values.phoneNumber}
-                      </Td>
-                    </Tr>
-                  </Tbody>
-                </Table>
-              </TableContainer>
-            </Box>
-          </>
+          <AppointmentSummary 
+          formik={formik} 
+          data={data} 
+          serviceData={serviceData} 
+          storedValue={storedValue}
+          handlePreviousStep={handlePreviousStep}          
+          />
         );
       default:
         return <div>Not Found</div>;
     }
+  };
+
+  const handleFormSubmit = () => {
+    formik.submitForm();
   };
 
   return (
@@ -198,6 +180,7 @@ const OrderForm = () => {
       <form onSubmit={formik.handleSubmit}>
         {_renderStepContent(currentStep)}
       </form>
+      <Button type="submit" onClick={handleFormSubmit} />
     </React.Fragment>
   );
 };

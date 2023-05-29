@@ -6,3 +6,4 @@ static/css
 static/js
 static/vendor
 templates
+celerybeat-schedule.db

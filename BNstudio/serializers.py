@@ -3,7 +3,7 @@ from django.db import transaction
 from django.utils import timezone
 from rest_framework import serializers
 from .signals import appointment_created
-from .models import Service,ServiceCategory,Staff,Appointment,AppointmentItem,Cart,CartItem,Customer,Review, Availability
+from .models import OnlineAppointment, Service,ServiceCategory,Staff,Appointment,AppointmentItem,Cart,CartItem,Customer,Review, Availability
 
 class ServiceCategorySerializer(serializers.ModelSerializer):
     services_count = serializers.IntegerField(read_only=True)   
@@ -211,3 +211,12 @@ class AvailabilitySerializer(serializers.ModelSerializer):
     class Meta:
         model = Availability
         fields =['id', 'date', 'staff']
+
+class OnlineAppointmentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = OnlineAppointment
+        fields = ['id','staff','date', 'time_slot','customer','phone_number', 'payment_method','payment', 'placed_at']
+        
+
+
+

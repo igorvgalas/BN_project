@@ -5,8 +5,9 @@ import { Box, Button, Flex, Heading, Select, Stack, Text, useColorModeValue } fr
 interface ServiceSelectFormInterface {
   formik: any
   handleNextStep: () => void
+  handlePreviousStep: () => void
 }
-const ServiceSelectForm = ({formik, handleNextStep}:ServiceSelectFormInterface) => {
+const ServiceSelectForm = ({formik, handleNextStep, handlePreviousStep}:ServiceSelectFormInterface) => {
   
   const { data, error } = useServices();
   
@@ -17,6 +18,10 @@ const ServiceSelectForm = ({formik, handleNextStep}:ServiceSelectFormInterface) 
       }
     });
   }, [formik]);
+
+  const handleBack = useCallback(() => {
+    handlePreviousStep(); 
+  }, [handlePreviousStep]);
 
   return (
     <Flex
@@ -55,9 +60,14 @@ const ServiceSelectForm = ({formik, handleNextStep}:ServiceSelectFormInterface) 
         </Select>
         </Stack>
       </Box>
-      <Button onClick={handleNext} colorScheme="blue">
-        Далі
-      </Button>
+      <Flex justify="space-between">
+          <Button onClick={handleBack} colorScheme="blue">
+            Назад
+          </Button>
+          <Button onClick={handleNext} colorScheme="blue">
+            Далі
+          </Button>
+        </Flex>  
       </Stack>
     </Flex>
   );

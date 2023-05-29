@@ -104,6 +104,36 @@ class PaymentMethod(models.Model):
         verbose_name = 'Спосіб оплати'
         verbose_name_plural = 'Спосіб оплати'
 
+class OnlineAppointment(models.Model):
+    PAYMENT_STATUS_PENDING = 'P'
+    PAYMENT_STATUS_COMPLETE = 'C'
+    PAYMENT_STATUS_FAILED = 'F'
+    PAYMENT_CHOICES = [
+        (PAYMENT_STATUS_PENDING, 'Pending'),
+        (PAYMENT_STATUS_COMPLETE, 'Complete'),
+        (PAYMENT_STATUS_FAILED, 'Failed')
+    ]
+    staff = models.ForeignKey(Staff,on_delete=models.DO_NOTHING, blank=True, null=True)
+    date = models.DateField(default=None)
+    time_slot = models.TimeField(blank=True, null=True)
+    service = models.ForeignKey(Service,on_delete=models.DO_NOTHING, blank=True, null=True)
+    customer = models.CharField(blank=True, null=True, max_length=50)
+    phone_number=models.CharField(blank=True, null=True, max_length=10)
+    payment_method = models.ForeignKey(PaymentMethod, on_delete=models.DO_NOTHING,blank=True, null=True)
+    payment = models.CharField(blank=True, null=True, max_length=50, choices=PAYMENT_CHOICES, default=PAYMENT_STATUS_PENDING)
+    placed_at = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self):
+        return str(self.id)
+
+    class Meta:
+        verbose_name = 'Онлайн запис'
+        verbose_name_plural = 'Онлайн запис'
+        permissions = [
+            ('cancel_order', 'Can cancel order')
+        ]
+
+
 
 class Appointment(models.Model):
     PAYMENT_STATUS_PENDING = 'P'
@@ -160,7 +190,7 @@ class CartItem(models.Model):
         unique_together = [['cart', 'service']]    
 
 class Availability(models.Model):
-    date=models.DateField()
+    date=models.DateField(default=None)
     staff = models.ForeignKey(Staff,on_delete=models.DO_NOTHING,blank=True, null=True, related_name='items')
 
     def __str__(self):
