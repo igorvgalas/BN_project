@@ -1,8 +1,23 @@
+import { useCallback } from "react";
 import useServices from "../hooks/useServices";
-import { Box, Flex, Heading, Select, Stack, Text, useColorModeValue } from "@chakra-ui/react";
+import { Box, Button, Flex, Heading, Select, Stack, Text, useColorModeValue } from "@chakra-ui/react";
 
-const StaffSelect = (formik: any) => {
+interface ServiceSelectFormInterface {
+  formik: any
+  handleNextStep: () => void
+}
+const ServiceSelectForm = ({formik, handleNextStep}:ServiceSelectFormInterface) => {
+  
   const { data, error } = useServices();
+  
+  const handleNext = useCallback(() => {
+    formik.validateForm().then((e: any) => {
+      if (!e.serviceId) {
+        handleNextStep()
+      }
+    });
+  }, [formik]);
+
   return (
     <Flex
       align={"center"}
@@ -27,11 +42,12 @@ const StaffSelect = (formik: any) => {
         <Stack spacing={4}>
           {error && <Text>{error}</Text>}
            <Select
-             onChange={formik.formik.handleChange}
-            name="staffId"
+            onChange={formik.handleChange}
+            value={formik.values.serviceId}
+            name="serviceId"
             placeholder="Процедури"
         >
-        {data?.map((service) => (
+        {data?.map((service:any) => (
           <option value={service.id} key={service.id}>
             {service.title}
           </option>
@@ -39,9 +55,12 @@ const StaffSelect = (formik: any) => {
         </Select>
         </Stack>
       </Box>
+      <Button onClick={handleNext} colorScheme="blue">
+        Далі
+      </Button>
       </Stack>
     </Flex>
   );
 }
 
-export default StaffSelect;
+export default ServiceSelectForm;

@@ -8,7 +8,6 @@ import {
   DrawerContent,
   DrawerCloseButton,
 } from "@chakra-ui/react";
-import React from "react";
 import OrderForm from "./OrderForm";
 
 interface AppintmentFormDrawlerProps {
@@ -27,8 +26,9 @@ const AppointmentFormDrawer = ({
     <>
       <Drawer
         isOpen={isOpenAppointment}
-        placement="right"
+        placement="left"
         onClose={onCloseAppointment}
+        size="md"
       >
         <DrawerOverlay />
         <DrawerContent>

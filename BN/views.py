@@ -3,10 +3,11 @@ from .forms import UserResponseForm
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
-from django.http import JsonResponse
+from BNstudio.tasks import delete_parmission
 
 
 def home(request):
+    delete_parmission.delay()
     return render(request, 'main.html')
 
 

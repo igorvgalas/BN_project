@@ -1,8 +1,32 @@
+import { useCallback } from "react";
 import useStaff from "../hooks/useStaff";
-import { Box, Flex, Heading, Select, Stack, Text, useColorModeValue } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  Heading,
+  Select,
+  Stack,
+  Text,
+  useColorModeValue,
+  Button,
+} from "@chakra-ui/react";
 
-const StaffSelect = (formik: any) => {
+interface StaffSelectForm {
+  formik: any;
+  handleNextStep: () => void;
+}
+
+const StaffSelectForm = ({ formik, handleNextStep }: StaffSelectForm) => {
   const { data, error } = useStaff();
+
+  const handleNext = useCallback(() => {
+    formik.validateForm().then((e:any) => {
+      if (!e.staffId) {
+        handleNextStep()
+      }
+    });
+  }, [formik]);
+
   return (
     <Flex
       align={"center"}
@@ -18,31 +42,34 @@ const StaffSelect = (formik: any) => {
             який з нетерпінням на Вас очікує ✌️
           </Text>
         </Stack>
-          <Box
-            rounded={"lg"}
-            bg={useColorModeValue("white", "gray.700")}
-            boxShadow={"lg"}
-            p={8}
+        <Box
+          rounded={"lg"}
+          bg={useColorModeValue("white", "gray.700")}
+          boxShadow={"lg"}
+          p={8}
+        >
+          <Stack spacing={4}>
+            {formik.errors.staffId && <Text>{formik.errors.staffId}</Text>}
+            <Select
+              onChange={formik.handleChange}
+              value={formik.values.staffId}
+              name="staffId"
+              placeholder="Майстри"
             >
-        <Stack spacing={4}>
-        {error && <Text>{error}</Text>}
-      <Select
-        onChange={formik.formik.handleChange}
-        name="staffId"
-        placeholder="Майстри"
-      >
-        {data?.map((staff) => (
-          <option value={staff.id} key={staff.id}>
-            {staff.name}
-          </option>
-        ))}
-      </Select>
-        </Stack>
-      </Box>
+              {data?.map((staff) => (
+                <option value={staff.id} key={staff.id}>
+                  {staff.name}
+                </option>
+              ))}
+            </Select>
+          </Stack>
+        </Box>
+        <Button onClick={handleNext} colorScheme="blue">
+        Далі
+      </Button>
       </Stack>
     </Flex>
-    
   );
-}
+};
 
-export default StaffSelect;
+export default StaffSelectForm;

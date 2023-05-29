@@ -11,9 +11,25 @@ import {
   Text,
   useColorModeValue,
   InputLeftAddon,
+  Button,
 } from "@chakra-ui/react";
+import { useCallback } from "react";
 
-export default function SignupCard() {
+interface AppointmentContactFormInterface {
+  formik: any;
+  handleNextStep: () => void;
+}
+
+export default function AppointmentContactForm({formik, handleNextStep}:AppointmentContactFormInterface) {
+  
+  const handleNext = useCallback(() => {
+    formik.validateForm().then((e:any) => {
+      if (!e.name || !e.phoneNumber) {
+        handleNextStep()
+      }
+    });
+  }, [formik]);
+  
   return (
     <Flex
       align={"center"}
@@ -36,17 +52,18 @@ export default function SignupCard() {
           p={8}
         >
           <Stack spacing={4}>
+          {formik.errors.name && <Text>{formik.errors.name}</Text>}
+          {formik.errors.phoneNumber && <Text>{formik.errors.phoneNumber}</Text>}
             <HStack>
               <Box>
-                <FormControl id="firstName" isRequired>
+                <FormControl id="name" isRequired>
                   <FormLabel>Імʼя</FormLabel>
-                  <Input type="text" />
-                </FormControl>
-              </Box>
-              <Box>
-                <FormControl id="lastName">
-                  <FormLabel>Прізвище</FormLabel>
-                  <Input type="text" />
+                  <Input 
+                  name="name" 
+                  type="text"
+                  onChange={formik.handleChange}
+                  value={formik.values.name}
+                   />
                 </FormControl>
               </Box>
             </HStack>
@@ -54,11 +71,19 @@ export default function SignupCard() {
               <FormLabel>Номер телефону</FormLabel>
               <InputGroup>
                 <InputLeftAddon children="+380" />
-                <Input type="tel" placeholder="номер телефону" />
+                <Input 
+                type="tel" 
+                name="phoneNumber" 
+                placeholder="номер телефону"
+                onChange={formik.handleChange}
+                value={formik.values.phoneNumber}/>
               </InputGroup>
             </FormControl>
           </Stack>
         </Box>
+        <Button onClick={handleNext} colorScheme="blue">
+        Далі
+      </Button>
       </Stack>
     </Flex>
   );

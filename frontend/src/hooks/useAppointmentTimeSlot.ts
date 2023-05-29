@@ -1,4 +1,4 @@
-import useData ,{ encodeQueryData } from "../hooks/useData"
+import useData ,{ encodeQueryData } from "./useData"
 
 export interface AppointmentTimeSlots {
     id: number;
@@ -7,7 +7,7 @@ export interface AppointmentTimeSlots {
     staff: number;
   }
   
-const useAppointmentTimeSlotFree = (staff:number, date:string) => {
+const useAppointmentTimeSlot = (staff:number, date:string) => {
   const params = {
     staff: staff,
     date: date
@@ -16,4 +16,4 @@ const useAppointmentTimeSlotFree = (staff:number, date:string) => {
 
   return { data, error, isLoading };
 };
-export default useAppointmentTimeSlotFree;
+export default useAppointmentTimeSlot;

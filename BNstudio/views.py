@@ -119,7 +119,7 @@ class AppointmentViewSet(ModelViewSet):
     def get_permissions(self):
         if self.request.method in ['PATCH','DELETE']:
             return [IsAdminUser()]
-        return [IsAuthenticated()]
+        return [AllowAny()]
 
     def create(self, request, *args, **kwargs):
         serializer = CreateAppointmentSerializer(
@@ -138,14 +138,15 @@ class AppointmentViewSet(ModelViewSet):
         return AppointmentSerializer
 
     def get_queryset(self):
-        user = self.request.user
+        return Appointment.objects.all()
+        # user = self.request.user
 
-        if user.is_staff:
-            return Appointment.objects.all()
+        # if user.is_staff:
+        #     return Appointment.objects.all()
 
-        customer_id = Customer.objects.only(
-            'id').get(user_id=user.id)
-        return Appointment.objects.filter(customer_id=customer_id)
+        # customer_id = Customer.objects.only(
+        #     'id').get(user_id=user.id)
+        # return Appointment.objects.filter(customer_id=customer_id)
 
 class AppointmentItemViewSet(ModelViewSet):
     http_method_names = ['get', 'post', 'patch', 'delete']
