@@ -18,23 +18,26 @@ import { useCallback } from "react";
 interface AppointmentContactFormInterface {
   formik: any;
   handleNextStep: () => void;
-  handlePreviousStep: () =>void
+  handlePreviousStep: () => void;
 }
 
-export default function AppointmentContactForm({formik, handleNextStep, handlePreviousStep}:AppointmentContactFormInterface) {
-  
+export default function AppointmentContactForm({
+  formik,
+  handleNextStep,
+  handlePreviousStep,
+}: AppointmentContactFormInterface) {
   const handleNext = useCallback(() => {
-    formik.validateForm().then((e:any) => {
+    formik.validateForm().then((e: any) => {
       if (!e.name || !e.phoneNumber) {
-        handleNextStep()
+        handleNextStep();
       }
     });
   }, [formik]);
 
   const handleBack = useCallback(() => {
-    handlePreviousStep(); 
+    handlePreviousStep();
   }, [handlePreviousStep]);
-  
+
   return (
     <Flex
       align={"center"}
@@ -57,18 +60,19 @@ export default function AppointmentContactForm({formik, handleNextStep, handlePr
           p={8}
         >
           <Stack spacing={4}>
-          {formik.errors.name && <Text>{formik.errors.name}</Text>}
-          {formik.errors.phoneNumber && <Text>{formik.errors.phoneNumber}</Text>}
+            {formik.errors.name && <Text>{formik.errors.name}</Text>}
+            {formik.errors.phoneNumber && (
+              <Text>{formik.errors.phoneNumber}</Text>
+            )}
             <HStack>
               <Box>
                 <FormControl id="name" isRequired>
                   <FormLabel>Імʼя</FormLabel>
-                  <Input 
-                  name="name" 
-                  type="text"
-                  onChange={formik.handleChange}
-                  value={formik.values.name}
-                   />
+                  <Input
+                    name="name"
+                    type="text"
+                    onChange={formik.handleChange}
+                  />
                 </FormControl>
               </Box>
             </HStack>
@@ -76,12 +80,12 @@ export default function AppointmentContactForm({formik, handleNextStep, handlePr
               <FormLabel>Номер телефону</FormLabel>
               <InputGroup>
                 <InputLeftAddon children="+380" />
-                <Input 
-                type="tel" 
-                name="phoneNumber" 
-                placeholder="номер телефону"
-                onChange={formik.handleChange}
-                value={formik.values.phoneNumber}/>
+                <Input
+                  type="tel"
+                  name="phoneNumber"
+                  placeholder="номер телефону 9 цифр"
+                  onChange={formik.handleChange}
+                />
               </InputGroup>
             </FormControl>
           </Stack>
@@ -93,7 +97,7 @@ export default function AppointmentContactForm({formik, handleNextStep, handlePr
           <Button onClick={handleNext} colorScheme="blue">
             Далі
           </Button>
-        </Flex>  
+        </Flex>
       </Stack>
     </Flex>
   );

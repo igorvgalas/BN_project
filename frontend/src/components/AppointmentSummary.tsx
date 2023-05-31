@@ -1,6 +1,7 @@
 import {
     Box,
     Button,
+    Flex,
     Heading,
     Table,
     TableContainer,
@@ -10,24 +11,19 @@ import {
   } from "@chakra-ui/react";
 import { Staff } from "../hooks/useStaff";
 import { Service } from "../hooks/useServices";
-import { useCallback } from "react";
 
   
   interface AppointmentSummaryInterface {
-    formik: any;
-    data: Staff[];
-    serviceData:Service[];
+    formik: any
+    data: Staff[]
+    serviceData:Service[]
     storedValue:any
     handlePreviousStep: () => void
+    handleNextStep: () => void
 }
   
-  export default function AppointmentSummary({formik,data,serviceData,storedValue, handlePreviousStep}:AppointmentSummaryInterface) {
+  export default function AppointmentSummary({formik,data,serviceData,storedValue, handlePreviousStep, handleNextStep}:AppointmentSummaryInterface) {
     
-    const handleBack = useCallback(() => {
-        handlePreviousStep(); 
-      }, [handlePreviousStep]);
-    
-
     return (
           <><Heading>Ваш запис</Heading><Box>
             <TableContainer>
@@ -66,9 +62,14 @@ import { useCallback } from "react";
                     </Tbody>
                 </Table>
             </TableContainer>
-            <Button onClick={handleBack} colorScheme="blue">
+            <Flex justify="space-between">
+          <Button onClick={handlePreviousStep} colorScheme="blue">
             Назад
           </Button>
+          <Button onClick={handleNextStep} colorScheme="blue">
+            Підтвердити
+          </Button>
+        </Flex>
         </Box>
         </>
         );

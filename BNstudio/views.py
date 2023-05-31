@@ -7,7 +7,7 @@ from rest_framework.permissions import AllowAny,IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet, GenericViewSet
 from rest_framework import status
-from .filters import ServiceFilter, CustomerFilter, AvailabilityFilter, AppointmentFilter
+from .filters import OnlineAppointmentFilter, ServiceFilter, CustomerFilter, AvailabilityFilter, AppointmentFilter
 from .models import *
 from .serializers import *
 from .permissions import ViewCustomerHistoryPermission
@@ -183,6 +183,26 @@ class AvailabilityViewSet(ModelViewSet):
         return Availability.objects.select_related('staff').all()
 
 class OnlineAppointmentViewSet(ModelViewSet):
-    serializer_class = OnlineAppointmentSerializer
-    queryset = OnlineAppointment.objects.all()
+    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
+    filterset_class = OnlineAppointmentFilter
+    http_method_names = ['get', 'post', 'patch', 'delete', 'head', 'options']
+
+    
+    def create(self, request, *args, **kwargs):
+        serializer = CreateOnlineAppointmentSerializer(
+            data=request.data)
+        serializer.is_valid(raise_exception=True)
+        online_appointment = serializer.save()
+        serializer = OnlineAppointmentSerializer(online_appointment)
+        return Response(serializer.data)
+
+    def get_serializer_class(self):
+        if self.request.method == 'POST':
+            return CreateOnlineAppointmentSerializer
+        elif self.request.method == 'PATCH':
+            return UpdateOnlineAppointmentSerializer
+        return OnlineAppointmentSerializer
+
+    def get_queryset(self):
+        return OnlineAppointment.objects.all()
     

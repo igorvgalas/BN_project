@@ -1,5 +1,5 @@
-import { useCallback } from "react";
-import useAppointmentTimeSlotFree from "../hooks/useAppointmentTimeSlot";
+import { useCallback, useEffect, useState } from "react";
+import useAppointmentTimeSlot from "../hooks/useAppointmentTimeSlot";
 import {
   Box,
   Button,
@@ -12,46 +12,54 @@ import {
 } from "@chakra-ui/react";
 
 interface AvailabilityTimeSlotInterface {
-  formik: any
-  handleNextStep:() => void
-  handlePreviousStep:() => void
+  formik: any;
+  handleNextStep: () => void;
+  handlePreviousStep: () => void;
 }
 
-
-const AvailabilityTimeSlotForm = ({formik, handleNextStep,handlePreviousStep}: AvailabilityTimeSlotInterface) => {
-  
+const AvailabilityTimeSlotForm = ({
+  formik,
+  handleNextStep,
+  handlePreviousStep,
+}: AvailabilityTimeSlotInterface) => {
   const handleNext = useCallback(() => {
     formik.validateForm().then((e: any) => {
       if (!e.appointmentTime) {
-        handleNextStep()
+        handleNextStep();
       }
     });
   }, [formik]);
 
   const handleBack = useCallback(() => {
-    handlePreviousStep(); 
+    handlePreviousStep();
   }, [handlePreviousStep]);
 
   const allTimeSlots = [
-    "10:00:00",
-    "11:30:00",
-    "13:00:00",
-    "14:30:00",
-    "16:00:00",
-    "17:30:00",
+    "10:00",
+    "11:30",
+    "13:00",
+    "14:30",
+    "16:00",
+    "17:30",
   ];
   const { data: dataAppointment, error: errorAppointment } =
-    useAppointmentTimeSlotFree(formik.values.staffId, formik.values.appointmentDate);
-  const bookedTimeSlot: string[] = [];
+    useAppointmentTimeSlot(
+      formik.values.staffId,
+      formik.values.appointmentDate
+    );
+  const [availableTimeSlots, setAvailableTimeSlots] = useState<string[]>([]);
 
-  if (dataAppointment) {
-    dataAppointment?.forEach((appointment) => {
-      bookedTimeSlot.push(appointment.time_slot);
-    });
-  }
-  const availableTimeSlots = allTimeSlots.filter(
-    (x) => !bookedTimeSlot.includes(x)
-  );
+  useEffect(() => {
+    if (dataAppointment) {
+      const bookedTimeSlots = dataAppointment.map(
+        (appointment) => appointment.appointmentTime
+      );
+      const filteredTimeSlots = allTimeSlots.filter(
+        (timeSlot) => !bookedTimeSlots.includes(timeSlot)
+      );
+      setAvailableTimeSlots(filteredTimeSlots);
+    }
+  }, [dataAppointment, allTimeSlots]);
   return (
     <Flex
       align={"center"}
@@ -74,7 +82,9 @@ const AvailabilityTimeSlotForm = ({formik, handleNextStep,handlePreviousStep}: A
           p={8}
         >
           <Stack spacing={4}>
-            {formik.errors.appointmentTime&& <Text>{formik.errors.appointmentTime}</Text>}
+            {formik.errors.appointmentTime && (
+              <Text>{formik.errors.appointmentTime}</Text>
+            )}
             <Select
               onChange={formik.handleChange}
               value={formik.values.appointmentTime}
@@ -96,7 +106,7 @@ const AvailabilityTimeSlotForm = ({formik, handleNextStep,handlePreviousStep}: A
           <Button onClick={handleNext} colorScheme="blue">
             Далі
           </Button>
-        </Flex> 
+        </Flex>
       </Stack>
     </Flex>
   );

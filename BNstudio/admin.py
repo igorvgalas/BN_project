@@ -84,38 +84,38 @@ class StaffAdmin(admin.ModelAdmin):
 
 @admin.register(models.OnlineAppointment)
 class OnlineAppointmentAdmin(admin.ModelAdmin):
-    list_display = ['id','staff','date', 'time_slot','service','customer','phone_number', 'payment_method','payment', 'placed_at']
+    list_display = ['id','staffId','appointmentDate', 'appointmentTime','serviceId','name','phoneNumber', 'payment_method','payment', 'placed_at','price']
     list_editeble = [ 'payment_method','payment']
-    list_filter = ['placed_at', 'staff', 'date']
-    search_fields = ['staff','date']
+    list_filter = ['placed_at', 'staffId', 'appointmentDate']
+    search_fields = ['staffId','appointmentDate']
 
-class AppointmentItemInline(admin.TabularInline):
-    model = models.AppointmentItem
-    autocomplete_fields = ['service', 'appointment']
-    extra = 1
+# class AppointmentItemInline(admin.TabularInline):
+#     model = models.AppointmentItem
+#     autocomplete_fields = ['service', 'appointment']
+#     extra = 1
 
 
-@admin.register(models.Appointment)
-class AppointmentAdmin(admin.ModelAdmin):
-    autocomplete_fields = ['customer', 'payment_method']
-    inlines = [AppointmentItemInline]
-    list_display = ['id','customer','placed_at','payment', 'payment_method', 'total_price', 'membership','staff','date', 'time_slot']
-    list_filter = ['placed_at', 'staff', 'date']
-    search_fields = ['customer','placed_at','payment_method', 'date', 'staff']
+# @admin.register(models.Appointment)
+# class AppointmentAdmin(admin.ModelAdmin):
+#     autocomplete_fields = ['customer', 'payment_method']
+#     inlines = [AppointmentItemInline]
+#     list_display = ['id','customer','placed_at','payment', 'payment_method', 'total_price', 'membership','staff','date', 'time_slot']
+#     list_filter = ['placed_at', 'staff', 'date']
+#     search_fields = ['customer','placed_at','payment_method', 'date', 'staff']
     
 
-    @admin.display(ordering='customer__membership')
-    def membership(self, appointment):
-        if appointment.customer:
-            return appointment.customer.membership
-        else:
-            return "N/A"
+#     @admin.display(ordering='customer__membership')
+#     def membership(self, appointment):
+#         if appointment.customer:
+#             return appointment.customer.membership
+#         else:
+#             return "N/A"
     
 
-@admin.register(models.AppointmentItem)
-class AppointmentItemAdmin(admin.ModelAdmin):
-    autocomplete_fields = ['service', 'appointment']
-    list_display = ['appointment', 'service', 'price']
+# @admin.register(models.AppointmentItem)
+# class AppointmentItemAdmin(admin.ModelAdmin):
+#     autocomplete_fields = ['service', 'appointment']
+#     list_display = ['appointment', 'service', 'price']
 
 
 @admin.register(models.PaymentMethod)

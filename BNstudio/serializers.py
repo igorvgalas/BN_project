@@ -2,6 +2,8 @@ from decimal import Decimal
 from django.db import transaction
 from django.utils import timezone
 from rest_framework import serializers
+
+from .signals import online_appointment_created
 from .signals import appointment_created
 from .models import OnlineAppointment, Service,ServiceCategory,Staff,Appointment,AppointmentItem,Cart,CartItem,Customer,Review, Availability
 
@@ -153,8 +155,6 @@ class CreateAppointmentSerializer(serializers.Serializer):
         if CartItem.objects.filter(cart_id=cart_id).count() == 0:
             raise serializers.ValidationError(
                 'The cart is empty.')
-
-        # Check if the staff is available for the given date and time_slot
         appointment_count = Appointment.objects.filter(
             staff_id=staff_id, date=date, time_slot=time_slot).count()
         if appointment_count > 0:
@@ -215,8 +215,66 @@ class AvailabilitySerializer(serializers.ModelSerializer):
 class OnlineAppointmentSerializer(serializers.ModelSerializer):
     class Meta:
         model = OnlineAppointment
-        fields = ['id','staff','date', 'time_slot','customer','phone_number', 'payment_method','payment', 'placed_at']
+        fields = ['id','staffId','appointmentDate', 'appointmentTime','serviceId','name','phoneNumber', 'payment_method','payment', 'placed_at','price']
         
+class UpdateOnlineAppointmentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = OnlineAppointment
+        fields = ['payment', 'payment_method','price']
 
+class CreateOnlineAppointmentSerializer(serializers.Serializer):
+    staffId = serializers.PrimaryKeyRelatedField(
+            queryset=Staff.objects.all(),
+            required=True)
+    appointmentTime = serializers.ChoiceField(
+            choices=[('10:00', '10:00'), ('11:30', '11:30'), ('13:00', '13:00'), 
+                 ('14:30', '14:30'), ('16:00', '16:00'), ('17:30', '17:30')],
+            required=True)
+    appointmentDate = serializers.DateField(required=True)
+    serviceId = serializers.PrimaryKeyRelatedField(
+        queryset=Service.objects.all(),
+        required=True)
+    name = serializers.CharField(required=True)
+    phoneNumber = serializers.CharField(required=True)
+    
 
+    def validate(self, data):
+        staff_id = data['staffId']
+        date = data['appointmentDate']
+        time_slot = data['appointmentTime']
+        name = data['name']
+        phoneNumber = data['phoneNumber']
+
+        appointment_count = OnlineAppointment.objects.filter(
+            staffId=staff_id, appointmentDate=date, appointmentTime=time_slot).count()
+        if appointment_count > 0:
+            raise serializers.ValidationError(
+                f"{staff_id} is not available for {time_slot} on {date}. Please select another time.")
+        if len(phoneNumber)!=9:
+            raise serializers.ValidationError("Phone number is not valid, plaese check it")
+        if len(name) < 3 or len(name)>50:
+            raise serializers.ValidationError("Your data in name field is not valid, lenght must be more then 3 and less then 50 characters")
+        return data
+    
+    
+    def save(self, **kwargs):
+        with transaction.atomic():
+            staff_id = self._validated_data['staffId']
+            date = self._validated_data['appointmentDate']
+            time_slot = self._validated_data['appointmentTime']
+            service_id = self._validated_data['serviceId']
+            name = self._validated_data['name']
+            phoneNumber = self._validated_data['phoneNumber']
+
+            online_appointment = OnlineAppointment.objects.create(
+                staffId = staff_id,
+                appointmentTime= time_slot,
+                appointmentDate=date,
+                serviceId = service_id,
+                name = name,
+                phoneNumber = phoneNumber)
+
+            online_appointment_created.send_robust(self.__class__, online_appointment=online_appointment)
+
+            return online_appointment
 

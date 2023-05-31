@@ -113,15 +113,16 @@ class OnlineAppointment(models.Model):
         (PAYMENT_STATUS_COMPLETE, 'Complete'),
         (PAYMENT_STATUS_FAILED, 'Failed')
     ]
-    staff = models.ForeignKey(Staff,on_delete=models.DO_NOTHING, blank=True, null=True)
-    date = models.DateField(default=None)
-    time_slot = models.TimeField(blank=True, null=True)
-    service = models.ForeignKey(Service,on_delete=models.DO_NOTHING, blank=True, null=True)
-    customer = models.CharField(blank=True, null=True, max_length=50)
-    phone_number=models.CharField(blank=True, null=True, max_length=10)
+    staffId = models.ForeignKey(Staff,on_delete=models.DO_NOTHING, blank=True, null=True)
+    appointmentDate = models.DateField(blank=True, null=True)
+    appointmentTime = models.CharField(max_length=5, blank=True, null=True)
+    serviceId = models.ForeignKey(Service,on_delete=models.DO_NOTHING, blank=True, null=True)
+    name = models.CharField(blank=True, null=True, max_length=50)
+    phoneNumber=models.CharField(blank=True, null=True, max_length=10)
     payment_method = models.ForeignKey(PaymentMethod, on_delete=models.DO_NOTHING,blank=True, null=True)
     payment = models.CharField(blank=True, null=True, max_length=50, choices=PAYMENT_CHOICES, default=PAYMENT_STATUS_PENDING)
     placed_at = models.DateTimeField(auto_now_add=True)
+    price = models.IntegerField(default=0)
     
     def __str__(self):
         return str(self.id)
@@ -129,9 +130,6 @@ class OnlineAppointment(models.Model):
     class Meta:
         verbose_name = 'Онлайн запис'
         verbose_name_plural = 'Онлайн запис'
-        permissions = [
-            ('cancel_order', 'Can cancel order')
-        ]
 
 
 

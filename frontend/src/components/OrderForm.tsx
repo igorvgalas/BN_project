@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from "react";
+import React, { useEffect, useCallback, useRef } from "react";
 import { useFormik } from "formik";
 import AvailabilityDateForm from "./AvailabilityDateForm";
 import AvailabilityTimeSlotForm from "./AvailabilityTimeSlotForm";
@@ -12,8 +12,6 @@ import StaffSelectForm from "./StaffSelectForm";
 import useStaff from "../hooks/useStaff";
 import useServices from "../hooks/useServices";
 import AppointmentSummary from "./AppointmentSummary";
-import { Button } from "@chakra-ui/react";
-
 
 export interface serviceOrderInterface {
   staffId?: number;
@@ -22,6 +20,10 @@ export interface serviceOrderInterface {
   serviceId?: number;
   name?: string;
   phoneNumber?: string;
+}
+
+interface OrderFormProps {
+  onSubmitSuccess: () => void;
 }
 
 const schema = Yup.object({
@@ -33,10 +35,11 @@ const schema = Yup.object({
     .required()
     .min(2, "Імʼя занадто коротке")
     .max(50, "Імʼя занадто довге"),
-  phoneNumber: Yup.number().required().max(9).min(9),
+  phoneNumber: Yup.number().required(),
 });
 
-const OrderForm = () => {
+const OrderForm = ({ onSubmitSuccess }: OrderFormProps) => {
+  const formRef = useRef();
   const { data, error } = useStaff();
   const { data: serviceData, error: serviceError } = useServices();
   const [currentStep, helpers] = useStep(6);
@@ -49,7 +52,6 @@ const OrderForm = () => {
     const step = Object.values(storedValue).filter(
       (i) => i !== undefined
     ).length;
-    helpers.setStep(step + 1);
   }, []);
 
   const initialValues: serviceOrderInterface = storedValue;
@@ -57,12 +59,30 @@ const OrderForm = () => {
   const formik = useFormik({
     validationSchema: schema,
     initialValues: initialValues,
-    onSubmit: (values, actions) => {
-      apiClient.post("/onlineappointment", values).then(() => {
-        setValue({});
+    onSubmit: (values) => {
+      apiClient
+        .post("/onlineappointment/", storedValue)
+        .then(() => {setValue({});
+        formik.resetForm();
+        onSubmitSuccess(); })
+        .catch((error) => {const errorMessage = "Сталась помилка. Перевірте правильність заповнення полів форми або спробуйте пізніше.";
+        formik.setStatus({ error: errorMessage });});
+    },
+  });
+
+  useEffect(() => {
+    if (error) {
+      formik.setErrors({
+        staffId: error,
       });
     }
-  });
+
+    if (serviceError) {
+      formik.setErrors({
+        serviceId: serviceError, 
+      });
+    }
+  }, [error, serviceError, formik]);
 
   const handleNextStep = useCallback(() => {
     formik.setErrors({});
@@ -103,16 +123,13 @@ const OrderForm = () => {
         phoneNumber: formik.values.phoneNumber,
       });
     }
-      if (currentStep === 6) {
-        apiClient
-          .post("/your-endpoint", storedValue)
-          .then(() => {})
-          .catch((error) => {
-          });
-      }
-    
-      helpers.setStep(currentStep + 1);
-    }, [currentStep, formik, helpers, setValue, storedValue]);
+    if (currentStep === 6) {
+      formik.submitForm();
+      return;
+    }
+
+    helpers.setStep(currentStep + 1);
+  }, [currentStep, formik, helpers, setValue, storedValue]);
 
   const handlePreviousStep = useCallback(() => {
     helpers.setStep(currentStep - 1);
@@ -142,10 +159,11 @@ const OrderForm = () => {
         );
       case 4:
         return (
-          <ServicesSelectForm 
-          formik={formik} 
-          handleNextStep={handleNextStep}
-          handlePreviousStep={handlePreviousStep} />
+          <ServicesSelectForm
+            formik={formik}
+            handleNextStep={handleNextStep}
+            handlePreviousStep={handlePreviousStep}
+          />
         );
       case 5:
         return (
@@ -153,17 +171,17 @@ const OrderForm = () => {
             formik={formik}
             handleNextStep={handleNextStep}
             handlePreviousStep={handlePreviousStep}
-
           />
         );
       case 6:
         return (
-          <AppointmentSummary 
-          formik={formik} 
-          data={data} 
-          serviceData={serviceData} 
-          storedValue={storedValue}
-          handlePreviousStep={handlePreviousStep}          
+          <AppointmentSummary
+            formik={formik}
+            data={data}
+            serviceData={serviceData}
+            storedValue={storedValue}
+            handlePreviousStep={handlePreviousStep}
+            handleNextStep={handleNextStep}
           />
         );
       default:
@@ -171,18 +189,17 @@ const OrderForm = () => {
     }
   };
 
-  const handleFormSubmit = () => {
-    formik.submitForm();
-  };
-
   return (
     <React.Fragment>
       <form onSubmit={formik.handleSubmit}>
+      {formik.status && formik.status.error && (
+          <div>{formik.status.error}</div>
+        )}
         {_renderStepContent(currentStep)}
       </form>
-      <Button type="submit" onClick={handleFormSubmit} />
     </React.Fragment>
   );
 };
 
 export default OrderForm;
+

@@ -1,8 +1,6 @@
 import {
-  Button,
   Drawer,
   DrawerBody,
-  DrawerFooter,
   DrawerHeader,
   DrawerOverlay,
   DrawerContent,
@@ -20,15 +18,9 @@ const AppointmentFormDrawer = ({
   isOpenAppointment,
   onCloseAppointment,
 }: AppintmentFormDrawlerProps) => {
-  
-  const handleFormSubmit = () => {
-    const submitButton = document.getElementById("OrderFormSubmitButton");
-    if (submitButton) {
-      submitButton.click();
-    }
+  const handleFormSubmission = () => {
     onCloseAppointment();
   };
-
   return (
     <>
       <Drawer
@@ -40,18 +32,13 @@ const AppointmentFormDrawer = ({
         <DrawerOverlay />
         <DrawerContent>
           <DrawerCloseButton />
-          <DrawerHeader borderBottomWidth="1px">Новий Запис</DrawerHeader>
+          <DrawerHeader 
+            borderBottomWidth="2px" >
+            Новий Запис
+          </DrawerHeader>
           <DrawerBody>
-            <OrderForm />
+            <OrderForm onSubmitSuccess={handleFormSubmission} />
           </DrawerBody>
-          <DrawerFooter borderTopWidth="1px">
-            <Button variant="outline" mr={3} onClick={onCloseAppointment}>
-              Відмінити
-            </Button>
-            <Button colorScheme="blue" onClick = {handleFormSubmit}>
-              Підтвердити
-            </Button>
-          </DrawerFooter>
         </DrawerContent>
       </Drawer>
     </>
