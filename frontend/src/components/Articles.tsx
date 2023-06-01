@@ -7,51 +7,105 @@ import {
   Box,
   Container,
   Heading,
+  Text,
+  useColorMode,
 } from "@chakra-ui/react";
 
+interface ArticlesInterface {
+  title: string;
+  content: string;
+}
+
+const AccordionPanelImproved = ({ title, content }: ArticlesInterface) => {
+  const paragraphs = content.split("\n\n");
+  const { colorMode } = useColorMode();
+  const textColor = { light: "black", dark: "white" };
+
+  return (
+    <AccordionItem>
+      <h3>
+        <AccordionButton>
+          <Box flex="1" textAlign="left">
+            <Text fontWeight="bold" fontSize="xl" color={textColor[colorMode]}>{title}</Text>
+          </Box>
+          <AccordionIcon />
+        </AccordionButton>
+      </h3>
+      <AccordionPanel pb={4}>
+        {paragraphs.map((paragraph, index) => (
+          <Text key={index} fontWeight="light" mb={4} color={textColor[colorMode]}>
+            {paragraph}
+          </Text>
+        ))}
+      </AccordionPanel>
+    </AccordionItem>
+  );
+};
+
 const Articles = () => {
+  const { colorMode } = useColorMode();
+  const textColor = { light: "black", dark: "white" };
   return (
     <Container maxW={"6xl"} py={12}>
-      <Heading textAlign="center" mb={10}>
+      <Heading textAlign="center" mb={10} color={textColor[colorMode]}>
         Цікавинки зі світу нігтьового сервісу
       </Heading>
       <Accordion allowToggle>
-        <AccordionItem>
-          <h2>
-            <AccordionButton>
-              <Box as="span" flex="1" textAlign="left">
-                Section 1 title
-              </Box>
-              <AccordionIcon />
-            </AccordionButton>
-          </h2>
-          <AccordionPanel pb={4}>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-            ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-            aliquip ex ea commodo consequat.
-          </AccordionPanel>
-        </AccordionItem>
+        <AccordionPanelImproved
+          title="Золоті тренди в дизайні нігтів 2023 року: Ваше джерело стилю та моди!..."
+          content="Наша нігтьова студія завжди прагне допомогти нашим клієнтам
+          виглядати найкращими і бути у тренді. У цій статті ми представляємо
+          вам найгарячіші тенденції дизайну нігтів на 2023 рік, які вам
+          сподобаються безсумнівно.
 
-        <AccordionItem>
-          <h2>
-            <AccordionButton>
-              <Box as="span" flex="1" textAlign="left">
-                Section 2 title
-              </Box>
-              <AccordionIcon />
-            </AccordionButton>
-          </h2>
-          <AccordionPanel pb={4}>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-            ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-            aliquip ex ea commodo consequat.
-          </AccordionPanel>
-        </AccordionItem>
+          Готуйтеся дивувати!
+
+          Металевий блиск. Якщо
+          ви любите розкіш та блискучі акценти, то цей тренд створений саме
+          для вас. Металеві кольори, такі як золото, срібло, бронза та мідь,
+          стали основою дизайну нігтів цього сезону. Вони надають вашим нігтям
+          стильного та розкішного вигляду, який підкреслить вашу
+          індивідуальність.
+
+          Геометричні візерунки. Геометрія завжди в тренді,
+          і на 2023 рік цей тренд тільки посилюється. Сміливі та абстрактні
+          геометричні візерунки на нігтях привертають увагу та створюють
+          неперевершений стильний образ. Використовуйте яскраві кольори та
+          різноманітні форми, щоб створити унікальний дизайн, який відображає
+          вашу креативність.
+
+          Ефект мокрого манікюру. Цей тренд надає нігтям
+          вигляду, наче вони знаходяться під шаром вологості. Він створює
+          ефект глянцю та розкіші, який підходить для будь-якого випадку, будь
+          то повсякденний образ або особлива подія. Експериментуйте з різними
+          кольорами та текстурами, щоб створити вишуканий мокрий ефект на
+          ваших нігтях.
+
+          Ваші нігті - ваше полотно для самовираження, тому не
+          бійтеся експериментувати та втілювати свої найсміливіші ідеї. Наша
+          професійна команда майстрів з радістю допоможе вам створити
+          неповторний дизайн, який підкреслить вашу красу та стиль. Будьте в
+          тренді з нашою нігтьовою студією! Запишіться на сеанс вже сьогодні
+          та дозвольте нам створити для вас незабутній образ."
+        />
+        <AccordionPanelImproved
+          title="Як правильно доглядати за нігтями в домашніх умовах: 5 корисних порад..."
+          content="Незалежно від того, чи ви відвідуєте нігтьову студію або робите манікюр в домашніх умовах, правильний догляд за нігтями є дуже важливим. Тут є 5 корисних порад, які допоможуть вам зберегти красу та здоров'я нігтьової пластини.
+
+          1. Використовуйте зволожуючі засоби. Щодня змазуйте нігтьову пластину зволожуючим кремом або олією, щоб запобігти сухості та ламкості.
+
+          2. Періодично робіть ванночки для нігтьової пластини. Занурюйте пальці у теплу мильну воду на 5-10 хвилин, щоб пом'якшити шкірку та нігтьову пластину.
+
+          3. Не використовуйте нігті як інструмент. Уникайте використання нігтьової пластини для відкривання упаковок, відокремлення паперу тощо. Це може призвести до пошкоджень та ламкості.
+
+          4. Вибирайте якісні засоби для манікюру. Купуйте якісні лаки, засоби для зняття лаку, масла для зм'якшення кутикули та інші засоби для догляду.
+          
+          5. Дотримуйтесь правильної техніки покриття лаком. Ретельно наносьте лак, починаючи з центру нігтя та рухаючись до боків. Застосовуйте кілька шарів, якщо потрібно, та не забувайте про базове покриття та верхній фіксуючий шар."
+
+        />
       </Accordion>
     </Container>
   );
-}
+};
 
 export default Articles;

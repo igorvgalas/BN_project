@@ -34,7 +34,7 @@ const Feature = ({ text, icon, iconBg }: FeatureProps) => {
       >
         {icon}
       </Flex>
-      <Text fontWeight={600}>{text}</Text>
+      <Text fontWeight={600} color={useColorModeValue("gray.900", "gray.100")}>{text}</Text>
     </Stack>
   );
 };
@@ -73,8 +73,8 @@ const FeaturesClientExp = () => {
           >
             Our Story
           </Text>
-          <Heading>Ми даруємо найцінніше - задоволення</Heading>
-          <Text color={"gray.500"} fontSize={"lg"}>
+          <Heading color={useColorModeValue("gray.900", "gray.100")}>Ми даруємо найцінніше - задоволення</Heading>
+          <Text color={useColorModeValue("gray.900", "gray.100")} fontSize={"lg"}>
             Важливим є піклування про кожного клієнта, 
             тому ми завжди надаємо Вам якісний та безпечний сервіс.
           </Text>
@@ -90,19 +90,19 @@ const FeaturesClientExp = () => {
               icon={
                 <Icon as={ArrowRightIcon} color={"yellow.500"} w={5} h={5} />
               }
-              iconBg={useColorModeValue("yellow.100", "yellow.900")}
+              iconBg={useColorModeValue("yellow.500", "yellow.100")}
               text={"4-ох етапна стерилізація інструменту"}
             />
             <Feature
               icon={<Icon as={ArrowRightIcon} color={"green.500"} w={5} h={5} />}
-              iconBg={useColorModeValue("green.100", "green.900")}
+              iconBg={useColorModeValue("green.500", "green.100")}
               text={"Гарантована якість"}
             />
             <Feature
               icon={
                 <Icon as={ArrowRightIcon} color={"purple.500"} w={5} h={5} />
               }
-              iconBg={useColorModeValue("purple.100", "purple.900")}
+              iconBg={useColorModeValue("purple.500", "purple.100")}
               text={"Простір приємного спілкування"}
             />
           </Stack>

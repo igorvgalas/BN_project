@@ -21,7 +21,7 @@ interface HeroAboutUsProps {
 
 const HeroAboutUs = (props: HeroAboutUsProps) => {
   const {onOpenAppointment} = props
-  
+
   return (
     <Container overflow={'hidden'} maxW={"8xl"} id='about_us'>
       <Stack
@@ -37,6 +37,7 @@ const HeroAboutUs = (props: HeroAboutUsProps) => {
             fontSize={{ base: "3xl", sm: "4xl", lg: "6xl" }}
           >
             <Text
+              color={useColorModeValue("gray.600", "white")}
               as={"span"}
               position={"relative"}
               _after={{
@@ -57,7 +58,7 @@ const HeroAboutUs = (props: HeroAboutUsProps) => {
               Beauty Nails!
             </Text>
           </Heading>
-          <Text color={"gray.500"}>
+          <Text color={useColorModeValue("gray.600", "white")} fontWeight={"light"} fontSize={"xl"}>
             Ми команда талановитих нейл-дизайнерів, 
             які роблять найкращий манікюр у Львові!
           </Text>
@@ -94,7 +95,7 @@ const HeroAboutUs = (props: HeroAboutUsProps) => {
             top={"-20%"}
             left={0}
             zIndex={-1}
-            color={useColorModeValue("pink.50", "pink.400")}
+            color={useColorModeValue("pink.50", "pink.100")}
           />
           <Box
             position={"relative"}

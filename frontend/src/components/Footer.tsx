@@ -88,7 +88,7 @@ const LargeWithNewsletter = () => {
               <SocialButton label={"YouTube"} href={"#"}>
                 <FaYoutube />
               </SocialButton>
-              <SocialButton label={"Instagram"} href={"#"}>
+              <SocialButton label={"Instagram"} href={"https://instagram.com/beauty_nails_lv?igshid=MzRlODBiNWFlZA=="}>
                 <FaInstagram />
               </SocialButton>
             </Stack>

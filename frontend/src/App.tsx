@@ -37,7 +37,7 @@ function App() {
           <FeaturesClientExp />
           <CategoryGrid />
           <Pricing />
-          <Team />
+          <Team/>
           <Articles />
           <Contacts />
         </GridItem>

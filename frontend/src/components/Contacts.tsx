@@ -10,6 +10,7 @@ import {
   SimpleGrid,
   Grid,
   Center,
+  useColorMode,
 } from "@chakra-ui/react";
 
 const Contacts = () => {
@@ -25,12 +26,14 @@ const Contacts = () => {
       backgroundColor: "pink.400",
     },
   };
+  const { colorMode } = useColorMode();
+  const textColor = { light: "black", dark: "white" };
 
   return (
     <Grid id="contacts" py={10}>
       <Box mb={10}>
-        <Heading textAlign={"center"}>Контакти</Heading>
-        <Text textAlign={"center"} margin={0}>
+        <Heading textAlign={"center"} color={textColor[colorMode]}>Контакти</Heading>
+        <Text textAlign={"center"} margin={0} color={textColor[colorMode]}>
           Торгово-офісний центр Інтерсіті
         </Text>
       </Box>
